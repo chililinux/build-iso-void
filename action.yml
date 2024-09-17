@@ -190,13 +190,7 @@ runs:
           echo "###################################################################"
 
           pushd "$WORK_PATH/void-mklive"
-          if [[ "$DEBUG" == 'true' ]]; then
-            ./mkrootfs
-            :
-          else
-            ./mkrootfs > /dev/null
-            :
-          fi
+          ./mkrootfs
           popd
         }
 
