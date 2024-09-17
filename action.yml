@@ -85,7 +85,7 @@ runs:
         REPO="https://github.com/void-linux/void-mklive"
         echo "Repository: $REPO"
 
-        if ! git clone --depth 1 "$REPO" "$WORK_PATH/iso-profiles"; then
+        if ! git clone --depth 1 "$REPO" "$WORK_PATH/void-mklive"; then
           echo "Falha ao clonar o repositorio $REPO"
           exit 1
         fi
