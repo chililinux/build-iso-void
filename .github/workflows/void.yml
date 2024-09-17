@@ -38,6 +38,7 @@ jobs:
         run: |
           xbps-install -Syu -f \
             xbps \
+            xz \
             kmod \
             ncurses \
             which \
