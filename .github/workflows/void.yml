@@ -28,6 +28,7 @@ jobs:
         run: |
           mkdir -p /mnt/var_lib_manjaro_tools_buildiso
           mkdir -p /mnt/var_cache_manjaro_tools_iso
+
       - name: Install Docker
         run: |
           apt-get update
