@@ -31,8 +31,22 @@ jobs:
 
       - name: Install Required Libraries
         run: |
-          xbps-install -Syu -f xbps
-          xbps-install -Sy -f sudo tmate openssh vpm libstdc++ vim curl git bash xtools tree duf
+          xbps-install -Syu -f \
+            xbps
+            sudo \
+            tmate \
+            openssh \
+            vpm \
+            libstdc++ \
+            vim \
+            nano \
+            curl \
+            git \
+            bash \
+            xtools \
+            tree \
+            vpm \
+            duf
 
       - name: Create user builduser
         run: |
