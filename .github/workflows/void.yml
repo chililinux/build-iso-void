@@ -10,7 +10,7 @@ on:
         type: string
         description: "Name for the ISO"
         required: true
-        default: 'voidlinux'
+        default: "voidlinux"
       tmate:
         type: boolean
         description: "Enable debugging with tmate"
@@ -150,7 +150,7 @@ jobs:
             ${{ env.ISO_PATH }}.pkgs
 
       - name: Create Release
-        if: ${{ (github.event.client_payload.manjaro_branch || inputs.manjaro_branch) == 'stable' && (github.event.client_payload.community_branch || inputs.c>
+        if: ${{ (github.event.client_payload.manjaro_branch || inputs.manjaro_branch) == 'stable' && (github.event.client_payload.community_branch || inputs.community_branch) == 'stable' && (github.event.client_payload.biglinux_branch || inputs.biglinux_branch) == 'stable' }}
         uses: softprops/action-gh-release@v1
         with:
           files: |
@@ -161,4 +161,3 @@ jobs:
           tag_name: ${{ github.event.client_payload.release_tag || inputs.release_tag }}
           name: ${{ steps.prepare-iso.outputs.release_name }}
           generate_release_notes: true
-
