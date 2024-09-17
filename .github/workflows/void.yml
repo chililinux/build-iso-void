@@ -10,7 +10,7 @@ on:
         type: string
         description: "Name for the ISO"
         required: true
-        default: "bigcommunity"
+        default: 'voidlinux'
 
 jobs:
   build:
