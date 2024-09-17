@@ -2,69 +2,69 @@ name: ISO Build
 
 on:
   repository_dispatch:
-    types: 
-      - 'ISO-*'
+    types:
+      - "ISO-*"
   workflow_dispatch:
     inputs:
       name:
         type: string
-        description: 'Name for the ISO'
+        description: "Name for the ISO"
         required: true
-        default: 'bigcommunity'
+        default: "bigcommunity"
       scope:
         type: choice
-        description: 'Build scope'
+        description: "Build scope"
         options:
           - full
           - minimal
-        default: 'full'
+        default: "full"
       office-chooser:
         type: boolean
-        description: 'Include office suite'
+        description: "Include office suite"
         required: false
         default: false
       tmate:
         type: boolean
-        description: 'Enable debugging with tmate'
+        description: "Enable debugging with tmate"
         required: false
         default: false
       release_tag:
         type: string
-        description: 'Release tag (e.g., YYYY-MM-DD_HH-mm)'
+        description: "Release tag (e.g., YYYY-MM-DD_HH-mm)"
         required: true
       kernel:
         type: choice
-        description: 'Kernel version'
+        description: "Kernel version"
         options:
           - latest
           - lts
           - oldLts
-        default: 'lts'
+        default: "lts"
       manjaro_branch:
         type: choice
-        description: 'Manjaro branch'
+        description: "Manjaro branch"
         options:
           - stable
           - testing
           - unstable
-        default: 'stable'
+        default: "stable"
       community_branch:
         type: choice
-        description: 'Community branch'
+        description: "Community branch"
         options:
           - stable
           - testing
-        default: 'stable'
+        default: "stable"
       biglinux_branch:
         type: choice
-        description: 'BigLinux branch'
+        description: "BigLinux branch"
         options:
           - stable
           - testing
-        default: 'stable'
+        default: "stable"
       edition:
         type: choice
-        description: 'Edition'
+        description: "Edition"
         options:
           - cinnamon
           - cosmic
@@ -73,7 +73,7 @@ on:
           - kde
           - xfce
           - wmaker
-        default: 'xfce'
+        default: "xfce"
 
 jobs:
   build:
@@ -89,8 +89,8 @@ jobs:
     steps:
       - name: Set up volume directory on HOST
         run: |
-          sudo mkdir -p /mnt/var_lib_manjaro_tools_buildiso
-          sudo mkdir -p /mnt/var_cache_manjaro_tools_iso
+          mkdir -p /mnt/var_lib_manjaro_tools_buildiso
+          mkdir -p /mnt/var_cache_manjaro_tools_iso
 
       - name: Display the current user in host
         run: |
@@ -105,7 +105,7 @@ jobs:
           echo "#########################################"
           ls -la /mnt
           echo "#########################################"
-      
+
       - name: Initial Debug
         run: |
           echo "Workflow started"
