@@ -92,7 +92,7 @@ jobs:
           mkdir -p /mnt/var_lib_manjaro_tools_buildiso
           mkdir -p /mnt/var_cache_manjaro_tools_iso
 
-       - name: Install Required Libraries
+      - name: Install Required Libraries
         run: |
           docker run -d --name void-container custom-voidlinux:latest sleep infinity
           docker exec void-container xbps-install -Sy --no-confirm libstdc++ vim curl git bash
