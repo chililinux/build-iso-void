@@ -46,10 +46,8 @@ runs:
 
         # atualizar e instalar pacotes adicionais
         xbps-install -Sy -f \
-          xtools \
-          git \
           tree \
-          duf
+          duf > /dev/null
 
     - name: Configurar o ambiente
       shell: bash
@@ -72,11 +70,11 @@ runs:
 
         # Ajustar ambiente do builduser
         sudo -u builduser bash << EOF
-        cd $HOME
-        cp -Rpa /etc/skel/.bash* .
-        cp -Rpa /etc/skel/.ps* .
-        cp -Rpa /etc/skel/.dircolors* .
-        cp -Rpa /etc/skel/.git-prompt* .
+        cd $HOME || true
+        cp -Rpa /etc/skel/.bash* . || true
+        cp -Rpa /etc/skel/.ps* . || true
+        cp -Rpa /etc/skel/.dircolors* . || true
+        cp -Rpa /etc/skel/.git-prompt* . || true
         EOF
 
     - name: Checkout void-mklive
