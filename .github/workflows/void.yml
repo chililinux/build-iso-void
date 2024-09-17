@@ -183,4 +183,3 @@ jobs:
           asset_path: ./${{ env.XZ_PATH }}
           asset_name: ${{ env.XZ_PATH }}
           asset_content_type: application/gzip
-
