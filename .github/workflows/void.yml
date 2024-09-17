@@ -11,6 +11,11 @@ on:
         description: "Name for the ISO"
         required: true
         default: 'voidlinux'
+      tmate:
+        type: boolean
+        description: "Enable debugging with tmate"
+        required: false
+        default: false
 
 jobs:
   build:
