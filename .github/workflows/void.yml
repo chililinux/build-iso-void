@@ -149,12 +149,24 @@ jobs:
             ${{ env.XZ_PATH }}
             ${{ env.XZ_PATH }}.md5
 
-      - name: Create Git Tag
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git tag v1.0.0
-          git push origin v1.0.0
+      - name: Criar release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
+        with:
+          tag_name: ${{ needs.get-time.outputs.time }}
+          release_name: Release ${{ needs.get-time.outputs.time }}
+          body: |
+            ## Descrição da Release
+
+            - **Data e Hora:** ${{ needs.get-time.outputs.time }}
+            - **Nome do Repositório:** ${{ env.REPO_NAME }}
+
+            Descrição detalhada da release aqui. Inclua quaisquer mudanças, melhorias, ou correções de bugs que foram feitas.
+
+          draft: false
+          prerelease: false
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
