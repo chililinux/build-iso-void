@@ -33,6 +33,10 @@ jobs:
         run: |
           xbps-install -Sy -f xbps sudo libstdc++ vim curl git bash xtools tree duf
 
+      - name: Create user builduser
+        run: |
+          useradd -m -G wheel,audio,video,cdrom,optical,kvm,xbuilder builduser
+
       - name: Display the current user in container
         run: |
           echo "#########################################"
