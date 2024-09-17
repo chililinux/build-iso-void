@@ -207,7 +207,9 @@ runs:
           XZ_BASENAME=$(basename "$OUTPUT_XZ_PATH_NAME")
 
           echo "OUTPUT_ISO_PATH_NAME=$OUTPUT_ISO_PATH_NAME" >> "$GITHUB_ENV"  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
-          echo "OUTPUT_XZ_PATH_NAME=$OUTPUT_XZ_PATH_NAME" >> "$GITHUB_ENV"  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
+          echo "OUTPUT_XZ_PATH_NAME=$OUTPUT_XZ_PATH_NAME" >> "$GITHUB_ENV"    # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
+          echo "ISO_BASENAME=$ISO_BASENAME" >> "$GITHUB_ENV"                  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
+          echo "XZ_BASENAME=$XZ_BASENAME" >> "$GITHUB_ENV"                    # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
           echo "OUTPUT_ISO_PATH_NAME: $OUTPUT_ISO_PATH_NAME"
           echo "OUTPUT_XZ_PATH_NAME: $OUTPUT_XZ_PATH_NAME"
 
