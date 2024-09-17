@@ -37,41 +37,20 @@ runs:
       shell: bash
       run: |
         # Setup build environment
-
-        #configure extra repos
         {
-          echo "[community-testing]"
-          echo "SigLevel = PackageRequired"
-          echo "Server = https://repo.communitybig.org/testing/\$arch"
-          echo
-          echo "[community-extra]"
-          echo "SigLevel = PackageRequired"
-          echo "Server = https://repo.communitybig.org/extra/\$arch"
-          echo
-          echo "[chili-stable]"
-          echo "SigLevel = Optional TrustAll"
-          echo "Server = https://repo.chililinux.com/stable/\$arch"
-          echo
-          echo "[chili-testing]"
-          echo "SigLevel = Optional TrustAll"
-          echo "Server = https://repo.chililinux.com/testing/\$arch"
-        } >> /etc/pacman.conf
+        echo 'repository=https://repo-fastly.voidlinux.org/current'
+        echo 'repository=https://repo-fastly.voidlinux.org/current/nonfree'
+        echo 'repository=https://repo-fastly.voidlinux.org/current/multilib'
+        echo 'repository=https://repo-fastly.voidlinux.org/current/multilib/nonfree'
+        } >> /etc/xbps.d/00-repository-main.conf
 
         # atualizar e instalar pacotes adicionais
-        pacman -Syu --quiet --needed --noconfirm --overwrite \* \
-          mktorrent \
-          squashfs-tools \
+        xbps-install -Sy \
+          xtools \
+          git \
           archiso \
-          manjaro-tools \
-          manjaro-tools-iso \
-          calamares \
-          calamares-tools \
-          mkinitcpio \
-          zip \
           tree \
-          duf \
-          chili-nanorc \
-          chili-bashrc > /dev/null
+          duf
 
     - name: Ajustar ambiente do builduser
       shell: bash
