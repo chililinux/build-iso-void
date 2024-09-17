@@ -150,7 +150,6 @@ jobs:
             ${{ env.XZ_PATH }}.md5
 
       - name: Create Release
-        if: ${{ (github.event.client_payload.manjaro_branch || inputs.manjaro_branch) == 'stable' && (github.event.client_payload.community_branch || inputs.community_branch) == 'stable' && (github.event.client_payload.biglinux_branch || inputs.biglinux_branch) == 'stable' }}
         uses: softprops/action-gh-release@v1
         with:
           files: |
