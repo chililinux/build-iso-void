@@ -150,11 +150,11 @@ jobs:
             ${{ env.XZ_PATH }}.md5
 
       - name: Create Git Tag
-         run: |
-           git config user.name "GitHub Actions"
-           git config user.email "actions@github.com"
-           git tag v1.0.0
-           git push origin v1.0.0
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag v1.0.0
+          git push origin v1.0.0
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
