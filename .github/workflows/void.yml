@@ -39,6 +39,7 @@ jobs:
           xbps-install -Syu -f \
             xbps \
             ncurses \
+            which \
             sudo \
             tmate \
             openssh \
