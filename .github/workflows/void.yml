@@ -175,6 +175,6 @@ jobs:
             ${{ env.XZ_PATH }}
             ${{ env.XZ_PATH }}.md5
             ${{ steps.prepare-iso.outputs.release_name }}.z*
-          tag_name: ${{ github.event.client_payload.release_tag || inputs.release_tag }}
+          #tag_name: ${{ github.event.client_payload.release_tag || inputs.release_tag }}
           name: ${{ steps.prepare-iso.outputs.release_name }}
           generate_release_notes: true
