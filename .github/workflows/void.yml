@@ -17,10 +17,34 @@ on:
         required: false
         default: true
 
+# Jobs do workflow
 jobs:
+  # Job para obter a hora atual
+  get-time:
+    runs-on: ubuntu-latest
+    outputs:
+      time: ${{ steps.time.outputs.time }} # Saída do job
+    steps:
+      - name: Obter a hora atual
+        id: time
+        run: echo "::set-output name=time::$(date +'%Y.%m.%d-%H%M')"
+
+  # Job para definir o nome do repositório
+  set-repo-name:
+    runs-on: ubuntu-latest
+    outputs:
+      REPOSITORY_NAME: ${{ steps.get-repo-name.outputs.repo_name }}
+    steps:
+      - name: Obter nome do repositório
+        id: get-repo-name
+        run: echo "::set-output name=repo_name::$(basename $GITHUB_REPOSITORY)"
+
   build:
     name: Build ISO ${{ github.event.client_payload.edition || 'Unknown' }}
     runs-on: ubuntu-latest
+    needs: [get-time, set-repo-name] # Depende do job get-time para obter a hora atual e do job set-repo-name para obter o nome do repositório
+    env:
+      REPO_NAME: ${{ needs.set-repo-name.outputs.REPOSITORY_NAME }}
     container:
       image: vcatafesta/voidlinux-docker:latest
       options: --privileged
@@ -152,15 +176,13 @@ jobs:
       - name: Criar release
         id: create_release
         uses: actions/create-release@v1
-        needs: [get-time, set-repo-name] # Depende do job get-time para obter a hora atual e do job set-repo-name para obter o nome do repositório
         env:
-          REPO_NAME: ${{ needs.set-repo-name.outputs.REPOSITORY_NAME }}
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           files: |
             ${{ env.XZ_PATH }}
             ${{ env.XZ_PATH }}.md5
-          tag_name: ${{ needs.get-time.outputs.time }}
+          tag_name: ${{ env.XZ_PATH }}
           release_name: Release ${{ needs.get-time.outputs.time }}
           body: |
             ## Descrição da Release

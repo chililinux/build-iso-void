@@ -224,4 +224,3 @@ runs:
       run: |
         echo "ISO_PATH=$WORK_PATH/$ISO_BASENAME" >> $GITHUB_ENV
         echo "XZ_PATH=$WORK_PATH/$XZ_BASENAME" >> $GITHUB_ENV
-
