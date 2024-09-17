@@ -49,6 +49,13 @@ runs:
           tree \
           duf > /dev/null
 
+    - name: Setup TMATE Session
+      uses: mxschmitt/action-tmate@v3
+      #if: inputs.tmate == 'true'
+      with:
+        install-dependencies: false
+        detached: true
+
     - name: Configurar o ambiente
       shell: bash
       run: |
@@ -95,13 +102,6 @@ runs:
         # clean '/__t/' directory
         rm -rf /__t/* || true
 
-    - name: Setup TMATE Session
-      uses: mxschmitt/action-tmate@v3
-      #if: inputs.tmate == 'true'
-      with:
-        install-dependencies: false
-        detached: true
-
     - name: Build ISO Image
       shell: bash
       env:
@@ -126,7 +126,7 @@ runs:
         fi
 
         # listando diretório iso-profiles no diretório atual
-        ls -la "$PROFILE_PATH"
+        ls -la "$WORK_PATH"
 
         build_iso() {
           echo "########################## RESUMO #################################"
@@ -146,14 +146,16 @@ runs:
           echo "ISO profiles path        : $PROFILE_PATH/$EDITION"
           echo "PATH_MANJARO_ISO_PROFILES: $PATH_MANJARO_ISO_PROFILES"
           echo "###################################################################"
-          echo "ROOT_RUN_DIR             : $(< /root/.config/manjaro-tools/iso-profiles.conf)"
-          echo "BUILDUSER_RUN_DIR        : $(< /home/builduser/.config/manjaro-tools/iso-profiles.conf)"
+          #echo "ROOT_RUN_DIR             : $(< /root/.config/manjaro-tools/iso-profiles.conf)"
+          #echo "BUILDUSER_RUN_DIR        : $(< /home/builduser/.config/manjaro-tools/iso-profiles.conf)"
           echo "###################################################################"
 
           if [[ "$DEBUG" == 'true' ]]; then
-            sudo buildiso "${SCOPE:+-f}" -p "community/$EDITION" -b "$MANJAROBRANCH" -k "${KERNEL_NAME}" "${OFFICE:+-o}"
+            #sudo buildiso "${SCOPE:+-f}" -p "community/$EDITION" -b "$MANJAROBRANCH" -k "${KERNEL_NAME}" "${OFFICE:+-o}"
+            :
           else
-            sudo buildiso "${SCOPE:+-f}" -p "community/$EDITION" -b "$MANJAROBRANCH" -k "${KERNEL_NAME}" "${OFFICE:+-o}" > /dev/null
+            #sudo buildiso "${SCOPE:+-f}" -p "community/$EDITION" -b "$MANJAROBRANCH" -k "${KERNEL_NAME}" "${OFFICE:+-o}" > /dev/null
+            :
           fi
         }
         build_iso
