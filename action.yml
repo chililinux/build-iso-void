@@ -55,7 +55,7 @@ runs:
       shell: bash
       run: |
         WORK_PATH='/__w/build-iso-void/build-iso-void'
-        PROFILE_PATH='/__w/build-iso-void/build-iso-void/void-mklive"
+        PROFILE_PATH='/__w/build-iso-void/build-iso-void/void-mklive'
         echo "WORK_PATH=$WORK_PATH" >> $GITHUB_ENV  # Exporta WORK_PATH para outras etapas
         echo "PROFILE_PATH=$PROFILE_PATH" >> $GITHUB_ENV  # Exporta WORK_PATH para outras etapas
 
