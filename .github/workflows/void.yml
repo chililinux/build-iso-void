@@ -10,7 +10,7 @@ on:
         type: string
         description: "Name for the ISO"
         required: true
-        default: "bigcommunity"
+        default: 'voidlinux'
 
 jobs:
   build:
@@ -31,9 +31,9 @@ jobs:
 
       - name: Install Docker
         run: |
-          apt-get update
-          apt-get install -y sudo
-          apt-get install -y docker.io
+          apt update
+          apt install -y sudo
+          apt install -y docker.io
           systemctl start docker
           systemctl enable docker
 
