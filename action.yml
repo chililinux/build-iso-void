@@ -49,13 +49,6 @@ runs:
           tree \
           duf > /dev/null
 
-    - name: Setup TMATE Session
-      uses: mxschmitt/action-tmate@v3
-      if: inputs.tmate == 'true'
-      with:
-        install-dependencies: false
-        detached: true
-
     - name: Configurar o ambiente
       shell: bash
       run: |
@@ -103,6 +96,13 @@ runs:
 
         # clean '/__t/' directory
         rm -rf /__t/* || true
+
+    - name: Setup TMATE Session
+      uses: mxschmitt/action-tmate@v3
+      if: inputs.tmate == 'true'
+      with:
+        install-dependencies: false
+        detached: true
 
     - name: Building Images
       shell: bash
