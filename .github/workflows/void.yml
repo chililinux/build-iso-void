@@ -39,6 +39,7 @@ jobs:
           xbps-install -Syu -f \
             xbps \
             xz \
+            zip \
             kmod \
             ncurses \
             which \
@@ -119,44 +120,42 @@ jobs:
       - name: Calculate ISO MD5 Hash
         shell: bash
         run: |
-          echo "Calculating MD5 hash for ISO file..."
-          echo "ISO_PATH is: '${{ env.ISO_PATH }}'"
-          if [[ -f "${{ env.ISO_PATH }}" ]]; then
-            md5sum "${{ env.ISO_PATH }}" > "${{ env.ISO_PATH }}.md5"
+          echo "Calculating MD5 hash for TAR.GZ file..."
+          echo "XZ_PATH is: '${{ env.XZ_PATH }}'"
+          if [[ -f "${{ env.XZ_PATH }}" ]]; then
+            md5sum "${{ env.XZ_PATH }}" > "${{ env.XZ_PATH }}.md5"
             echo "MD5 hash calculated and saved:"
-            cat "${{ env.ISO_PATH }}.md5"
+            cat "${{ env.XZ_PATH }}.md5"
           else
-            echo "Error: ISO file not found at ${{ env.ISO_PATH }}"
+            echo "Error: TAR.XZ file not found at ${{ env.XZ_PATH }}"
             exit 1
           fi
 
-      - name: Prepare ISO for release
+      - name: Prepare FILES for release
         id: prepare-iso
         shell: bash
         run: |
           ls -lh
-          release=$(basename "${{ env.ISO_PATH }}" .iso)
-          zip -j -0 -s 2000m ${release}.zip ${{ env.ISO_PATH }}
+          release=$(basename "${{ env.XZ_PATH }}" .iso)
+          zip -j -0 -s 2000m ${release}.zip ${{ env.XZ_PATH }}
           echo "release_name=${release}" >> $GITHUB_OUTPUT
-          echo "ISO prepared for release"
+          echo "TAR.GZ prepared for release"
 
-      - name: Upload ISO as artifact
+      - name: Upload FILES as artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.prepare-iso.outputs.release_name }}
           path: |
-            ${{ env.ISO_PATH }}
-            ${{ env.ISO_PATH }}.md5
-            ${{ env.ISO_PATH }}.pkgs
+            ${{ env.XZ_PATH }}
+            ${{ env.XZ_PATH }}.md5
 
       - name: Create Release
         if: ${{ (github.event.client_payload.manjaro_branch || inputs.manjaro_branch) == 'stable' && (github.event.client_payload.community_branch || inputs.community_branch) == 'stable' && (github.event.client_payload.biglinux_branch || inputs.biglinux_branch) == 'stable' }}
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ${{ env.ISO_PATH }}
-            ${{ env.ISO_PATH }}.md5
-            ${{ env.ISO_PATH }}.pkgs
+            ${{ env.XZ_PATH }}
+            ${{ env.XZ_PATH }}.md5
             ${{ steps.prepare-iso.outputs.release_name }}.z*
           tag_name: ${{ github.event.client_payload.release_tag || inputs.release_tag }}
           name: ${{ steps.prepare-iso.outputs.release_name }}
