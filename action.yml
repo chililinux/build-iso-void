@@ -45,10 +45,9 @@ runs:
         } >> /etc/xbps.d/00-repository-main.conf
 
         # atualizar e instalar pacotes adicionais
-        xbps-install -Sy \
+        xbps-install -Sy -f \
           xtools \
           git \
-          archiso \
           tree \
           duf
 
