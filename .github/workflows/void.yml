@@ -11,69 +11,6 @@ on:
         description: "Name for the ISO"
         required: true
         default: "bigcommunity"
-      scope:
-        type: choice
-        description: "Build scope"
-        options:
-          - full
-          - minimal
-        default: "full"
-      office-chooser:
-        type: boolean
-        description: "Include office suite"
-        required: false
-        default: false
-      tmate:
-        type: boolean
-        description: "Enable debugging with tmate"
-        required: false
-        default: false
-      release_tag:
-        type: string
-        description: "Release tag (e.g., YYYY-MM-DD_HH-mm)"
-        required: true
-      kernel:
-        type: choice
-        description: "Kernel version"
-        options:
-          - latest
-          - lts
-          - oldLts
-        default: "lts"
-      manjaro_branch:
-        type: choice
-        description: "Manjaro branch"
-        options:
-          - stable
-          - testing
-          - unstable
-        default: "stable"
-      community_branch:
-        type: choice
-        description: "Community branch"
-        options:
-          - stable
-          - testing
-        default: "stable"
-      biglinux_branch:
-        type: choice
-        description: "BigLinux branch"
-        options:
-          - stable
-          - testing
-        default: "stable"
-      edition:
-        type: choice
-        description: "Edition"
-        options:
-          - cinnamon
-          - cosmic
-          - deepin
-          - gnome
-          - kde
-          - xfce
-          - wmaker
-        default: "xfce"
 
 jobs:
   build:
@@ -91,6 +28,13 @@ jobs:
         run: |
           mkdir -p /mnt/var_lib_manjaro_tools_buildiso
           mkdir -p /mnt/var_cache_manjaro_tools_iso
+      - name: Install Docker
+        run: |
+          apt-get update
+          apt-get install -y sudo
+          apt-get install -y docker.io
+          systemctl start docker
+          systemctl enable docker
 
       - name: Install Required Libraries
         run: |
