@@ -89,10 +89,11 @@ runs:
       run: |
         # Cloning void-mklive repository
         #REPO="${{ inputs.iso_profiles_repo }}"
-        REPO="https://github.com/void-linux/void-mklive"
+        #REPO="https://github.com/void-linux/void-mklive"
         REPO="https://github.com/chililinux/chili-void-mklive"
         echo "Repository: $REPO"
 
+        rm -rf "$WORK_PATH/void-mklive" || true
         if ! git clone --depth 1 "$REPO" "$WORK_PATH/void-mklive"; then
           echo "Falha ao clonar o repositorio $REPO"
           exit 1
@@ -182,7 +183,7 @@ runs:
           #echo "BUILDUSER_RUN_DIR        : $(< /home/builduser/.config/manjaro-tools/iso-profiles.conf)"
           echo "###################################################################"
 
-          pushd "$WORK_PATH"
+          pushd "$WORK_PATH/void-mklive"
           if [[ "$DEBUG" == 'true' ]]; then
             ./mkrootfs
             :
