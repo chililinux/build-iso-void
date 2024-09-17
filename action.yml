@@ -201,10 +201,8 @@ runs:
         }
 
         cleanup_and_move_files() {
-          #OUTPUT_ISO_PATH_NAME=$(find /var/cache/manjaro-tools/iso -type f -name "*.iso" -exec stat -c '%Y %n' {} + | sort -nr | awk 'NR==1 {print $2}')
-          #FILE_PKG=$(find /var/cache/manjaro-tools/iso -type f -name "*-pkgs.txt" -exec stat -c '%Y %n' {} + | sort -nr | awk 'NR==1 {print $2}')
-          OUTPUT_ISO_PATH_NAME=$(find "$WORK_PATH/void-mklive" -type f -name "*.iso" -printf '%T@ %p\n' | sort -nr | head -n 1 | cut -d' ' -f2-)
-          OUTPUT_XZ_PATH_NAME=$(find "$WORK_PATH/void-mklive" -type f -name "*.tar.xz" -printf '%T@ %p\n' | sort -nr | head -n 1 | cut -d' ' -f2-)
+          OUTPUT_ISO_PATH_NAME=$(find "$WORK_PATH/void-mklive" -type f -name "*.iso" -exec stat -c '%Y %n' {} + | sort -nr | awk 'NR==1 {print $2}')
+          OUTPUT_XZ_PATH_NAME=$(find "$WORK_PATH/void-mklive" -type f -name "*.tar.xz" -exec stat -c '%Y %n' {} + | sort -nr | awk 'NR==1 {print $2}')
           ISO_BASENAME=$(basename "$OUTPUT_ISO_PATH_NAME")
           XZ_BASENAME=$(basename "$OUTPUT_XZ_PATH_NAME")
 
