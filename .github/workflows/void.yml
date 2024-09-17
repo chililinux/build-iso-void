@@ -15,7 +15,7 @@ on:
         type: boolean
         description: "Enable debugging with tmate"
         required: false
-        default: false
+        default: true
 
 jobs:
   build:
