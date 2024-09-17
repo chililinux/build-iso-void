@@ -10,14 +10,14 @@ on:
         type: string
         description: "Name for the ISO"
         required: true
-        default: 'voidlinux'
+        default: "bigcommunity"
 
 jobs:
   build:
     name: Build ISO ${{ github.event.client_payload.edition || 'Unknown' }}
     runs-on: ubuntu-latest
     container:
-      image: voidlinux/voidlinux:latest
+      image: vcatafesta/voidlinux-docker:latest
       options: --privileged
       volumes:
         - /mnt/var_lib_manjaro_tools_buildiso:/var/lib/manjaro-tools/buildiso
@@ -29,25 +29,14 @@ jobs:
           mkdir -p /mnt/var_lib_manjaro_tools_buildiso
           mkdir -p /mnt/var_cache_manjaro_tools_iso
 
-      - name: Install Docker
-        run: |
-          apt update
-          apt install -y sudo
-          apt install -y docker.io
-          systemctl start docker
-          systemctl enable docker
-
       - name: Install Required Libraries
         run: |
-          docker run -d --name void-container custom-voidlinux:latest sleep infinity
-          docker exec void-container xbps-install -Sy --no-confirm libstdc++ vim curl git bash
-          docker stop void-container
-          docker rm void-container
+          xbps-install -Sy --no-confirm libstdc++ vim curl git bash
 
-      - name: Display the current user in host
+      - name: Display the current user in container
         run: |
           echo "#########################################"
-          echo "Current host is: $(hostname)"
+          echo "Current container is: $(hostname)"
           echo "Current user is: $(whoami)"
           echo "Current user ID is: $(id -u)"
           echo "Current user details:"
@@ -71,21 +60,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Run Void Linux Container
-        run: |
-          # Iniciar o container Void Linux
-          docker run -d --name void-container voidlinux/voidlinux:latest sleep infinity
-
-          # Instalar pacotes dentro do container
-          docker exec void-container xbps-install -Sy --no-confirm vim curl git bash
-
-          # Adicionar qualquer outro comando necessário
-          docker exec void-container echo "Pacotes instalados e comandos executados."
-
-          # Parar e remover o container
-          docker stop void-container
-          docker rm void-container
 
       - name: Build ISO
         uses: ./
