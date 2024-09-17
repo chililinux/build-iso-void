@@ -1,4 +1,4 @@
-name: ISO Build
+name: Build ISO VoidLinux
 
 on:
   repository_dispatch:
