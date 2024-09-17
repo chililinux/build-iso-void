@@ -102,7 +102,7 @@ runs:
         # clean '/__t/' directory
         rm -rf /__t/* || true
 
-    - name: Build ISO Image
+    - name: Building Images
       shell: bash
       env:
         DEBUG: ${{ inputs.tmate }}
@@ -158,5 +158,35 @@ runs:
             :
           fi
         }
-        build_iso
 
+        build_mkroot_fs() {
+          echo "########################## RESUMO #################################"
+          echo "BUILD COMMAND            : buildiso ${SCOPE:+-f} -p community/$EDITION -b $MANJAROBRANCH -k ${KERNEL_NAME} ${OFFICE:+-o}"
+          echo "PROFILE_PATH             : $PROFILE_PATH"
+          echo "EDITION                  : $EDITION"
+          echo "MANJAROBRANCH            : $MANJAROBRANCH"
+          echo "COMMUNITYBRANCH          : $COMMUNITYBRANCH"
+          echo "BIGLINUXBRANCH           : $BIGBRANCH"
+          echo "KERNEL_VER               : ${KERNEL_VER}"
+          echo "KERNEL_NAME              : ${KERNEL_NAME}"
+          echo "SCOPE                    : $SCOPE"
+          echo "OFFICE                   : $OFFICE"
+          echo "###################################################################"
+          echo "WORK_PATH                : $WORK_PATH"
+          echo "PROFILE_PATH             : $PROFILE_PATH"
+          echo "ISO profiles path        : $PROFILE_PATH/$EDITION"
+          echo "PATH_MANJARO_ISO_PROFILES: $PATH_MANJARO_ISO_PROFILES"
+          echo "###################################################################"
+          #echo "ROOT_RUN_DIR             : $(< /root/.config/manjaro-tools/iso-profiles.conf)"
+          #echo "BUILDUSER_RUN_DIR        : $(< /home/builduser/.config/manjaro-tools/iso-profiles.conf)"
+          echo "###################################################################"
+
+          if [[ "$DEBUG" == _'true' ]]; then
+            ./mkrootfs.sh x86_64
+            :
+          else
+            ./mkrootfs.sh x86_64 >/dev/null
+            :
+          fi
+        }
+        build_mkroot_fs
