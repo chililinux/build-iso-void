@@ -182,12 +182,14 @@ runs:
           #echo "BUILDUSER_RUN_DIR        : $(< /home/builduser/.config/manjaro-tools/iso-profiles.conf)"
           echo "###################################################################"
 
-          if [[ "$DEBUG" == _'true' ]]; then
+          pushd "$WORK_PATH"
+          if [[ "$DEBUG" == 'true' ]]; then
             ./mkrootfs
             :
           else
             ./mkrootfs > /dev/null
             :
           fi
+          popd
         }
         build_mkroot_fs
