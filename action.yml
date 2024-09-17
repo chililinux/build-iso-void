@@ -90,6 +90,7 @@ runs:
         # Cloning void-mklive repository
         #REPO="${{ inputs.iso_profiles_repo }}"
         REPO="https://github.com/void-linux/void-mklive"
+        REPO="https://github.com/chililinux/chili-void-mklive"
         echo "Repository: $REPO"
 
         if ! git clone --depth 1 "$REPO" "$WORK_PATH/void-mklive"; then
@@ -182,10 +183,10 @@ runs:
           echo "###################################################################"
 
           if [[ "$DEBUG" == _'true' ]]; then
-            ./mkrootfs.sh x86_64
+            ./mkrootfs
             :
           else
-            ./mkrootfs.sh x86_64 >/dev/null
+            ./mkrootfs > /dev/null
             :
           fi
         }
