@@ -152,13 +152,14 @@ jobs:
       - name: Criar release
         id: create_release
         uses: actions/create-release@v1
+        needs: [get-time, set-repo-name] # Depende do job get-time para obter a hora atual e do job set-repo-name para obter o nome do repositório
         env:
+          REPO_NAME: ${{ needs.set-repo-name.outputs.REPOSITORY_NAME }}
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           files: |
             ${{ env.XZ_PATH }}
             ${{ env.XZ_PATH }}.md5
-            ${{ steps.prepare-iso.outputs.release_name }}.z*
           tag_name: ${{ needs.get-time.outputs.time }}
           release_name: Release ${{ needs.get-time.outputs.time }}
           body: |
