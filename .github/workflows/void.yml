@@ -32,7 +32,7 @@ jobs:
       - name: Install Required Libraries
         run: |
           xbps-install -Syu -f \
-            xbps
+            xbps \
             sudo \
             tmate \
             openssh \
