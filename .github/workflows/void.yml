@@ -31,7 +31,7 @@ jobs:
 
       - name: Install Required Libraries
         run: |
-          xbps-install -Sy -f xbps libstdc++ vim curl git bash xtools tree duf
+          xbps-install -Sy -f xbps sudo libstdc++ vim curl git bash xtools tree duf
 
       - name: Display the current user in container
         run: |
