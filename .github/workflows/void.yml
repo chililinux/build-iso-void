@@ -117,7 +117,7 @@ jobs:
           echo "ISO_PATH=${{ env.WORK_PATH }}/${{ env.ISO_BASENAME }}" >> $GITHUB_ENV
           echo "XZ_PATH=${{ env.WORK_PATH }}/${{ env.XZ_BASENAME }}" >> $GITHUB_ENV
 
-      - name: Calculate ISO MD5 Hash
+      - name: Calculate FILES MD5 Hash
         shell: bash
         run: |
           echo "Calculating MD5 hash for TAR.GZ file..."
