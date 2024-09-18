@@ -157,6 +157,7 @@ jobs:
         run: |
           ls -lha
           release=${{ env.XZ_BASENAME }} # Apenas obtém o nome do arquivo com extensão
+          release="${release%.tar.xz}"
           echo "release_name=${release}" >> $GITHUB_ENV
           if zip \
               --junk-paths \
@@ -165,7 +166,8 @@ jobs:
               ${release}.zip \
               ${{ env.XZ_FULLNAME }} \
               ${{ env.XZ_FULLNAME }}.md5; then
-            echo "ZIP_FULLNAME=${release}.zip" >> "$GITHUB_ENV"
+            echo "ZIP_FULLNAME=${{ env.XZ_BASENAME }}/${release}.zip" >> "$GITHUB_ENV"
+            echo "ZIP_BASENAME=${release}.zip"                        >> "$GITHUB_ENV"
             echo "${ZIP_FULLNAME} prepared for release"
             ls -lha
           else
