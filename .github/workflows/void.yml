@@ -265,10 +265,12 @@ jobs:
           asset_name: ${{ env.XZ_BASENAME }}
           asset_content_type: application/x-xz # Tipo correto para arquivos .xz
 
-      - name: Clonar repositório de destino
+      - name: Clonar repositório de destino https://github.com/voidlinux-br/void-installer.git
         shell: bash
         run: |
-          git clone https://github.com/voidlinux-br/void-installer.git "${{ env.WORK_PATH }}/void-installer"
+          pushd "${{ env.WORK_PATH }}"
+          git clone https://github.com/voidlinux-br/void-installer.git
+          popd
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
 

@@ -105,7 +105,7 @@ runs:
 
     - name: Setup TMATE Session
       uses: mxschmitt/action-tmate@v3
-      if: inputs.tmate == 'true'
+      if: ${{ inputs.tmate }} == 'true'
       with:
         install-dependencies: false
         detached: true
