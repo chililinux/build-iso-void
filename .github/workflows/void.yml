@@ -166,7 +166,7 @@ jobs:
               ${release}.zip \
               ${{ env.XZ_FULLNAME }} \
               ${{ env.XZ_FULLNAME }}.md5; then
-            echo "ZIP_FULLNAME=${{ env.XZ_BASENAME }}/${release}.zip" >> "$GITHUB_ENV"
+            echo "ZIP_FULLNAME=${{ env.WORK_PATH }}/${release}.zip" >> "$GITHUB_ENV"
             echo "ZIP_BASENAME=${release}.zip"                        >> "$GITHUB_ENV"
             echo "${ZIP_FULLNAME} prepared for release"
             ls -lha
