@@ -191,7 +191,7 @@ jobs:
       - name: Upload FILES as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.ZIP_FULLNAME }}
+          name: ${{ env.ZIP_BASENAME }}
           path: |
             ${{ env.ZIP_FULLNAME }}
             ${{ env.XZ_FULLNAME }}
