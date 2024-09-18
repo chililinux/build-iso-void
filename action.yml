@@ -210,8 +210,8 @@ runs:
           [[ -n "$OUTPUT_XZ_PATH_NAME"  ]] && mv -fv "$OUTPUT_XZ_PATH_NAME" "$WORK_PATH/" || echo "Failed to move tar.xz file"
 
           # Set environment variables
-          echo "ISO_PATH=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_ENV"
-          echo "XZ_PATH=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_ENV"
+          echo "ISO_FULLNAME=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_ENV"
+          echo "XZ_FULLNAME=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_ENV"
           # Set outputs
           echo "iso_path=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_OUTPUT"
           echo "xz_path=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_OUTPUT"
