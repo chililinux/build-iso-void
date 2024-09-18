@@ -167,8 +167,8 @@ jobs:
               ${release}.zip \
               ${{ env.XZ_FULLNAME }} \
               ${{ env.XZ_FULLNAME }}.md5; then
-            echo "TAR.GZ prepared for release"
             echo "ZIP_FULLNAME=${release}.zip" >> "$GITHUB_ENV"
+            echo "${ZIP_FULLNAME} prepared for release"
           else
             echo "ERRO: No preparo do arquivo ZIP para release"
             exit 1
@@ -177,12 +177,14 @@ jobs:
       - name: Debug environment variables and List Files
         run: |
           echo "ISO_BASENAME=${{ env.ISO_BASENAME }}"
-          echo "ISO_FULLNAME=${{ env.XZ_FULLNAME }}"
+          echo "ISO_FULLNAME=${{ env.ISO_FULLNAME }}"
           echo "XZ_BASENAME=${{ env.XZ_BASENAME }}"
           echo "XZ_FULLNAME=${{ env.XZ_FULLNAME }}"
-          echo "ZIP_FULLNAME=${{ env.XZ_FULLNAME }}"
-          echo "ISO Path from output: ${{ steps.define-paths.outputs.iso_path }}"
-          echo "XZ Path from output: ${{ steps.define-paths.outputs.xz_path }}"
+          echo "ZIP_FULLNAME=${{ env.ZIP_FULLNAME }}"
+          echo "ISO Path from output=${{ steps.define-paths.outputs.iso_path }}"
+          echo "XZ Path from output=${{ steps.define-paths.outputs.xz_path }}"
+
+          # ls -la "${{ env.WORK_PATH }}
           ls -la "${{ env.WORK_PATH }}"
 
       - name: Upload FILES as artifact
