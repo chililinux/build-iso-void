@@ -190,8 +190,10 @@ runs:
           echo "###################################################################"
 
           pushd "$WORK_PATH/void-mklive"
-          #./mkrootfs
-          touch void-x86_64-base-custom-20240917.tar.xz
+          #teste
+          #touch void-x86_64-base-custom-20240917.tar.xz
+          #efetivo
+          ./mkrootfs
           popd
         }
 
