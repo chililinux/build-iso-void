@@ -218,6 +218,7 @@ runs:
         main
 
     - name: Set ISO path
+      shell: bash
       run: |
         # Set environment variables
         echo "ISO_FULLNAME=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_ENV"
