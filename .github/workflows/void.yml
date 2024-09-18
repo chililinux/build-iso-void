@@ -297,7 +297,7 @@ jobs:
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
           git add .
-          git commit -m "Adicionar arquivo tar.gz gerado automaticamente"
+          git commit -m "Gerado e adicionado automaticamente pelo Github Actions"
           popd
 
       - name: Empurrar mudanças para o repositório de destino
