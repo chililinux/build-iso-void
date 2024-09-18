@@ -190,6 +190,8 @@ jobs:
 
       - name: Upload FILES as artifact
         uses: actions/upload-artifact@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           name: ${{ env.ZIP_BASENAME }}
           path: |
@@ -223,8 +225,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
-          asset_path: ${{ env.XZ_FULLNAME }} # Caminho do arquivo .tar.xz
-          asset_name: ${{ env.XZ_BASENAME }} # Nome do arquivo sem o caminho completo
+          asset_path: ${{ env.XZ_FULLNAME }}   # Caminho do arquivo .tar.xz
+          asset_name: ${{ env.XZ_BASENAME }}   # Nome do arquivo sem o caminho completo
           asset_content_type: application/x-xz # Tipo correto para arquivos .xz
 
       - name: Fazer upload do arquivo .zip no release
@@ -235,5 +237,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
           asset_path: ${{ env.ZIP_FULLNAME }} # Caminho do arquivo .tar.xz
-          asset_name: $(basename "${{ env.ZIP_FULLNAME }}") # Nome do arquivo sem o caminho completo
-          asset_content_type: application/gzip # Tipo correto para arquivos .zip
+          asset_name: ${{ env.ZIP_BASENAME }} # Nome do arquivo sem o caminho completo
+          asset_content_type: application/zip # Tipo correto para arquivos .zip
