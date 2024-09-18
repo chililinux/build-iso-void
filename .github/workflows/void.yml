@@ -136,7 +136,7 @@ jobs:
           tmate: ${{ github.event.client_payload.tmate || 'false' }}
 
           # Tokens e segredos
-          github_token: ${{ secrets.TOKEN_RELEASE }}
+          github_token: ${{ secrets.ORGANIZATION_TOKEN }}
 
       - name: Calculate FILES MD5 Hash
         shell: bash
@@ -192,7 +192,7 @@ jobs:
       - name: Upload FILES as artifact
         uses: actions/upload-artifact@v3
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
+          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           name: ${{ env.ZIP_BASENAME }}
           path: |
@@ -206,7 +206,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
+          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           tag_name: ${{ github.run_id }}
           release_name: Release ${{ needs.get-time.outputs.time }}
@@ -220,7 +220,7 @@ jobs:
         id: upload-release-asset-zip
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
+          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
           asset_path: ${{ env.ZIP_FULLNAME }} # Caminho do arquivo .tar.xz
@@ -231,7 +231,7 @@ jobs:
         id: upload-release-asset-tar-xz
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
+          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
           asset_path: ${{ env.XZ_FULLNAME }} # Caminho do arquivo .tar.xz
