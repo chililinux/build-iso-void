@@ -203,7 +203,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
-          tag_name: "${{ env.XZ_BASENAME }}-${{ needs.get-time.outputs.time }}"
+          tag_name: ${{ env.XZ_BASENAME }}-${{ github.run_id }}
           release_name: Release ${{ needs.get-time.outputs.time }}
           body: |
             ## Descrição da Release
