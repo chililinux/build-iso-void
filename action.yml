@@ -193,7 +193,7 @@ runs:
           #teste
           #touch void-x86_64-base-custom-20240917.tar.xz
           #efetivo
-          ./mkrootfs
+          [[ ${{ inputs.tmate }} == 'true' ]] && ./mkrootfs || ./mkrootfs > /dev/null
           popd
         }
 
