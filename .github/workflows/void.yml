@@ -208,7 +208,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
         with:
-          tag_name: ${{ env.XZ_BASENAME }}-${{ github.run_id }}
+          tag_name: ${{ github.run_id }}
           release_name: Release ${{ env.TIME }}
           body: |
             - **Data e Hora        :** ${{ env.TIME }}
