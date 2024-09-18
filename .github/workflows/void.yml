@@ -137,11 +137,6 @@ jobs:
           # Tokens e segredos
           github_token: ${{ secrets.TOKEN_RELEASE }}
 
-      - name: Set ISO path
-        run: |
-          echo "ISO_FULLNAME=${{ env.WORK_PATH }}/${{ env.ISO_BASENAME }}" >> $GITHUB_ENV
-          echo "XZ_FULLNAME=${{ env.WORK_PATH }}/${{ env.XZ_BASENAME }}" >> $GITHUB_ENV
-
       - name: Calculate FILES MD5 Hash
         shell: bash
         run: |
