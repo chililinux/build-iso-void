@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [get-time, set-repo-name] # Depende do job get-time para obter a hora atual e do job set-repo-name para obter o nome do repositório
     env:
-      REPO_NAME: ${{ needs.set-repo-name.outputs.REPOSITORY_NAME }}
+      REPO_NAME: ${{ env.REPOSITORY_NAME }}
       GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
     container:
       image: vcatafesta/voidlinux-docker:latest
