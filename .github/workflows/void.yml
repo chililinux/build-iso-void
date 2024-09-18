@@ -280,6 +280,7 @@ jobs:
           ls -lha ${{ env.WORK_PATH }}
           pushd "${{ env.WORK_PATH }}/void-installer"
           cp -fv "${{ env.XZ_FULLNAME }}" .
+          cp -fv "${{ env.XZ_FULLNAME }}.md5" .
           popd
 
       - name: Configurar Git para commit
@@ -294,7 +295,7 @@ jobs:
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
-          git add ${{ env.XZ_FULLNAME }}
+          git add .
           git commit -m "Adicionar arquivo tar.gz gerado automaticamente"
           popd
 
