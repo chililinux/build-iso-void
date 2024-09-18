@@ -20,6 +20,15 @@ on:
         description: "Enable debugging with tmate"
         required: false
         default: false
+      edition:
+        type: choice
+        description: "Edition"
+        options:
+          - base-minimal
+          - base-system
+          - base-voidstrap
+          - base-custom
+        default: "base-custom"
 
 # Jobs do workflow
 jobs:
@@ -45,7 +54,7 @@ jobs:
         run: echo "::set-output name=repo_name::$(basename $GITHUB_REPOSITORY)"
 
   build:
-    name: Build Tarball void-x86_64-${{ github.event.client_payload.edition || 'base' }}
+    name: Build void-x86_64-${{ github.event.client_payload.edition || 'base-custom' }}
     runs-on: ubuntu-latest
     needs: [get-time, set-repo-name] # Depende do job get-time para obter a hora atual e do job set-repo-name para obter o nome do repositório
     env:
