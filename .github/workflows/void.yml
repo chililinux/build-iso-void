@@ -66,15 +66,15 @@ jobs:
     container:
       image: vcatafesta/voidlinux-docker:latest
       options: --privileged
-#      volumes:
-#        - /mnt/var_lib_manjaro_tools_buildiso:/var/lib/manjaro-tools/buildiso
-#        - /mnt/var_cache_manjaro_tools_iso:/var/cache/manjaro-tools/iso
+    #      volumes:
+    #        - /mnt/var_lib_manjaro_tools_buildiso:/var/lib/manjaro-tools/buildiso
+    #        - /mnt/var_cache_manjaro_tools_iso:/var/cache/manjaro-tools/iso
 
     steps:
-#      - name: Set up volume directory on HOST
-#        run: |
-#          mkdir -p /mnt/var_lib_manjaro_tools_buildiso
-#          mkdir -p /mnt/var_cache_manjaro_tools_iso
+      #      - name: Set up volume directory on HOST
+      #        run: |
+      #          mkdir -p /mnt/var_lib_manjaro_tools_buildiso
+      #          mkdir -p /mnt/var_cache_manjaro_tools_iso
 
       - name: Install Required Libraries
         run: |
@@ -269,7 +269,7 @@ jobs:
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}"
-          git clone https://github.com/voidlinux-br/void-installer.git
+          git clone --depth=1 https://github.com/voidlinux-br/void-installer.git
           popd
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
@@ -287,8 +287,9 @@ jobs:
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "vctafesta@gmail.com"
+          git config --global user.name "GitHub Actions"
+          git remote set-url origin https://x-access-token:${{ secrets.ORGANIZATION_TOKEN }}@github.com/voidlinux-br/void-installer.git
           popd
 
       - name: Fazer commit do arquivo .tar.gz
