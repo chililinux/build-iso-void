@@ -111,7 +111,10 @@ jobs:
           echo "Event Action: ${{ github.event.action }}"
           echo "Edition: ${{ github.event.client_payload.edition || inputs.edition }}"
           echo "Tmate from payload: ${{ github.event.client_payload.tmate }}"
-          echo "Full github event: ${{ toJson(github.event) }}"
+          #echo "Full github event: ${{ toJson(github.event) }}"
+          #echo "Full github event:"
+          #cat $GITHUB_EVENT_PATH
+          echo "Full github event: ${{ github.event }}"
 
       - name: Checkout repository
         uses: actions/checkout@v4
