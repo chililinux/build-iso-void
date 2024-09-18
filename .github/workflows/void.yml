@@ -276,7 +276,7 @@ jobs:
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
-          cp "${{ env.XZ_FULLNAME }}" "${{ env.WORK_PATH }}/void-installer"
+          cp -fv "${{ env.XZ_FULLNAME }}" .
           popd
 
       - name: Configurar Git para commit
