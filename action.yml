@@ -227,6 +227,13 @@ runs:
 
         main
 
+    - name: Extrair data do nome do arquivo .tar.xz e definir tag_name
+      id: set-tag-name
+      run: |
+        FILENAME="$XZ_BASENAME"
+        TAG_NAME=$(echo "$FILENAME" | grep -oP '\d{8}')
+        echo "XZ_TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+
     - name: Set ISO path
       shell: bash
       run: |

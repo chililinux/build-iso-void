@@ -233,8 +233,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
-          tag_name: ${{ github.run_id }}_xz
-          release_name: Release ${{ needs.get-time.outputs.time }}_xz
+          tag_name: ${{ env.XZ_TAG_NAME }}
+          release_name: Release ${{ env.XZ_TAG_NAME }}
           body: |
             - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
             - **Nome do Repositório:** ${{ env.REPO_NAME }}
