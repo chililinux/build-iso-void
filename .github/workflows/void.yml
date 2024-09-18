@@ -166,13 +166,20 @@ jobs:
           echo "release_name=${release}" >> $GITHUB_ENV
           echo "TAR.GZ prepared for release"
 
+      - name: Debug environment variables
+        run: |
+          echo "XZ_BASENAME=${{ env.XZ_BASENAME }}"
+          echo "XZ_PATH=${{ env.XZ_PATH }}"
+
       - name: Upload FILES as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.prepare-iso.outputs.release_name }}
+          name: ${{ env.XZ_BASENAME }}  # Nome do artefato, ajustado para incluir a variável correta
           path: |
-            ${{ env.XZ_PATH }}
-            ${{ env.XZ_PATH }}.md5
+            ${{ env.XZ_PATH }}          # Caminho completo para o arquivo .tar.xz
+            ${{ env.XZ_PATH }}.md5      # Se houver um arquivo .md5 para ser incluído
+          if-no-files-found: warn
+          include-hidden-files: false
 
       - name: Criar release
         id: create_release
