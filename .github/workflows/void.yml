@@ -266,18 +266,21 @@ jobs:
           asset_content_type: application/x-xz # Tipo correto para arquivos .xz
 
       - name: Clonar repositório de destino
+        shell: bash
         run: |
           git clone https://github.com/voidlinux-br/void-installer.git "${{ env.WORK_PATH }}/void-installer"
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
 
       - name: Copiar arquivo .tar.gz para o repositório de destino
+        shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
-          cp ${{ env.XZ_FULLNAME }} void-installer/
+          cp "${{ env.XZ_FULLNAME }}" "${{ env.WORK_PATH }}/void-installer"
           popd
 
       - name: Configurar Git para commit
+        shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
           git config user.name "github-actions[bot]"
@@ -285,6 +288,7 @@ jobs:
           popd
 
       - name: Fazer commit do arquivo .tar.gz
+        shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
           git add ${{ env.XZ_FULLNAME }}
@@ -292,6 +296,7 @@ jobs:
           popd
 
       - name: Empurrar mudanças para o repositório de destino
+        shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
           git push origin main
