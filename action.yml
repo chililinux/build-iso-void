@@ -60,8 +60,8 @@ runs:
       run: |
         WORK_PATH='/__w/build-iso-void/build-iso-void'
         PROFILE_PATH='/__w/build-iso-void/build-iso-void/void-mklive'
-        echo "WORK_PATH=$WORK_PATH" >> $GITHUB_ENV  # Exporta WORK_PATH para outras etapas
-        echo "PROFILE_PATH=$PROFILE_PATH" >> $GITHUB_ENV  # Exporta WORK_PATH para outras etapas
+        echo "WORK_PATH=$WORK_PATH" >> "$GITHUB_ENV"        # Exporta WORK_PATH para outras etapas
+        echo "PROFILE_PATH=$PROFILE_PATH" >> "$GITHUB_ENV"  # Exporta WORK_PATH para outras etapas
 
     - name: Ajustar ambiente do builduser
       shell: bash
@@ -208,6 +208,13 @@ runs:
 
           [[ -n "$OUTPUT_ISO_PATH_NAME" ]] && mv -fv "$OUTPUT_ISO_PATH_NAME" "$WORK_PATH/" || echo "Failed to move ISO file"
           [[ -n "$OUTPUT_XZ_PATH_NAME"  ]] && mv -fv "$OUTPUT_XZ_PATH_NAME" "$WORK_PATH/" || echo "Failed to move tar.xz file"
+
+          # Set environment variables
+          echo "ISO_PATH=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_ENV"
+          echo "XZ_PATH=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_ENV"
+          # Set outputs
+          echo "iso_path=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_OUTPUT"
+          echo "xz_path=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_OUTPUT"
         }
 
         main() {
@@ -216,13 +223,3 @@ runs:
         }
 
         main
-
-    - name: Set ISO path
-      shell: bash
-      run: |
-        # Set environment variables
-        echo "ISO_PATH=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_ENV"
-        echo "XZ_PATH=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_ENV"
-        # Set outputs
-        echo "iso_path=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_OUTPUT"
-        echo "xz_path=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_OUTPUT"
