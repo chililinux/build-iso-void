@@ -42,15 +42,19 @@ jobs:
       - name: Obter nome do repositório
         id: get-repo-name
         run: |
-          echo "repo_name=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_ENV
-          echo "REPO_NAME=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_ENV
+          repo_name=$(basename $GITHUB_REPOSITORY)
+          echo "REPOSITORY_NAME=$repo_name" >> $GITHUB_ENV
+        # Define o nome do repositório como saída do job
+        - name: Definir saída do job
+          id: set-output
+          run: echo "::set-output name=repo_name::$repo_name"
 
   build:
     name: Build ISO ${{ github.event.client_payload.edition || 'Unknown' }}
     runs-on: ubuntu-latest
     needs: [get-time, set-repo-name] # Depende do job get-time para obter a hora atual e do job set-repo-name para obter o nome do repositório
     env:
-      GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
+      REPO_NAME: ${{ needs.set-repo-name.outputs.REPOSITORY_NAME }}  # Acesso à variável de ambiente definida no job anterior
     container:
       image: vcatafesta/voidlinux-docker:latest
       options: --privileged
@@ -192,6 +196,8 @@ jobs:
 
       - name: Upload FILES as artifact
         uses: actions/upload-artifact@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
         with:
           name: ${{ env.ZIP_BASENAME }}
           path: |
@@ -204,6 +210,8 @@ jobs:
       - name: Criar release
         id: create_release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
         with:
           tag_name: ${{ env.XZ_BASENAME }}-${{ github.run_id }}
           release_name: Release ${{ needs.get-time.outputs.time }}
@@ -216,6 +224,8 @@ jobs:
       - name: Fazer upload do arquivo .tar.xz no release
         id: upload-release-asset-tar-xz
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
           asset_path: ${{ env.XZ_FULLNAME }} # Caminho do arquivo .tar.xz
@@ -225,6 +235,8 @@ jobs:
       - name: Fazer upload do arquivo .zip no release
         id: upload-release-asset-zip
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
           asset_path: ${{ env.ZIP_FULLNAME }} # Caminho do arquivo .tar.xz
