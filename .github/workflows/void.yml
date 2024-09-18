@@ -180,7 +180,7 @@ jobs:
       - name: Upload FILES as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.XZ_BASENAME }}  # Nome do artefato, ajustado para incluir a variável correta
+          name: ${{ env.XZ_BASENAME }} # Nome do artefato, ajustado para incluir a variável correta
           path: |
             ${{ env.XZ_PATH }}          # Caminho completo para o arquivo .tar.xz
             ${{ env.XZ_PATH }}.md5      # Se houver um arquivo .md5 para ser incluído
