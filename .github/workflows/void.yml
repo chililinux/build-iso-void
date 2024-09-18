@@ -154,16 +154,18 @@ jobs:
       - name: Calculate FILES MD5 Hash
         shell: bash
         run: |
+          pushd "${{ env.WORK_PATH }}"
           echo "Calculating MD5 hash for: ${{ env.XZ_FULLNAME }} file..."
-          echo "XZ_FULLNAME is: '${{ env.XZ_FULLNAME }}'"
-          if [[ -f "${{ env.XZ_FULLNAME }}" ]]; then
-            md5sum "${{ env.XZ_FULLNAME }}" > "${{ env.XZ_FULLNAME }}.md5"
-            echo "MD5 '$XZ_FULLNAME.md5' hash calculated and saved:"
-            cat "${{ env.XZ_FULLNAME }}.md5"
+          echo "XZ_BASENAME is: '${{ env.XZ_BASENAME }}'"
+          if [[ -f "${{ env.XZ_BASENAME }}" ]]; then
+            md5sum "${{ env.XZ_BASENAME }}" > "${{ env.XZ_BASENAME }}.md5"
+            echo "MD5 '$XZ_BASENAME.md5' hash calculated and saved:"
+            cat "${{ env.XZ_BASENAME }}.md5"
           else
-            echo "ERRO: ${{ env.XZ_FULLNAME }} file not found at ${{ env.WORK_PATH }}"
+            echo "ERRO: ${{ env.XZ_BASENAME }} file not found at ${{ env.WORK_PATH }}"
             exit 1
           fi
+          popd
 
       - name: Prepare ZIP file for release
         id: prepare-iso
