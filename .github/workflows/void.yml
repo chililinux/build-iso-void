@@ -31,9 +31,9 @@ jobs:
     steps:
       - name: Obter a hora atual
         id: time
-        run: echo "time=$(date +'%Y.%m.%d-%H%M')" >> $GITHUB_ENV
+        run: echo "::set-output name=time::$(date +'%Y.%m.%d-%H%M')"
 
- # Job para definir o nome do repositório
+  # Job para definir o nome do repositório
   set-repo-name:
     runs-on: ubuntu-latest
     outputs:
@@ -41,7 +41,8 @@ jobs:
     steps:
       - name: Obter nome do repositório
         id: get-repo-name
-        run: echo "repo_name=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_OUTPUT
+        #run: echo "repo_name=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_OUTPUT
+        run: echo "::set-output name=repo_name::$(basename $GITHUB_REPOSITORY)"
 
   build:
     name: Build ISO ${{ github.event.client_payload.edition || 'Unknown' }}
