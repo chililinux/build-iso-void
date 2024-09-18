@@ -209,7 +209,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           tag_name: ${{ github.run_id }}_zip
-          release_name: Release ${{ needs.get-time.outputs.time }}
+          release_name: Release ${{ needs.get-time.outputs.time }}_zip
           body: |
             - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
             - **Nome do Repositório:** ${{ env.REPO_NAME }}
@@ -234,7 +234,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           tag_name: ${{ github.run_id }}_xz
-          release_name: Release ${{ needs.get-time.outputs.time }}
+          release_name: Release ${{ needs.get-time.outputs.time }}_xz
           body: |
             - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
             - **Nome do Repositório:** ${{ env.REPO_NAME }}
