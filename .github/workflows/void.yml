@@ -161,7 +161,7 @@ jobs:
         shell: bash
         run: |
           ls -lh
-          release=$(basename "${{ env.XZ_PATH }}" .iso)
+          release=$(basename "${{ env.XZ_PATH }}")  # Apenas obtém o nome do arquivo com extensão
           zip -j -0 -s 2000m ${release}.zip ${{ env.XZ_PATH }}
           echo "release_name=${release}" >> $GITHUB_ENV
           echo "TAR.GZ prepared for release"
