@@ -206,8 +206,16 @@ runs:
           echo "ISO_BASENAME=$ISO_BASENAME" >> "$GITHUB_ENV"                  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
           echo "XZ_BASENAME=$XZ_BASENAME" >> "$GITHUB_ENV"                    # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
 
-          [[ -n "$OUTPUT_ISO_PATH_NAME" ]] && mv -fv "$OUTPUT_ISO_PATH_NAME" "$WORK_PATH/" || echo "ERRO: Falha ao mover arquivo ISO $OUTPUT_ISO_PATH_NAME"
-          [[ -n "$OUTPUT_XZ_PATH_NAME"  ]] && mv -fv "$OUTPUT_XZ_PATH_NAME" "$WORK_PATH/"  || echo "ERRO: Falha ao mover arquivo XZ $OUTPUT_XZ_PATH_NAME"
+          if [[ -n "$OUTPUT_ISO_PATH_NAME" ]]; then
+            mv -fv "$OUTPUT_ISO_PATH_NAME" "$WORK_PATH/" || echo "ERRO: Falha ao mover arquivo ISO $OUTPUT_ISO_PATH_NAME"
+            # Set environment variables
+            echo "ISO_FULLNAME=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_ENV"
+          fi
+          if [[ -n "$OUTPUT_XZ_PATH_NAME"  ]]; then
+            mv -fv "$OUTPUT_XZ_PATH_NAME" "$WORK_PATH/"  || echo "ERRO: Falha ao mover arquivo XZ $OUTPUT_XZ_PATH_NAME"
+            # Set environment variables
+            echo "XZ_FULLNAME=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_ENV"
+          fi
         }
 
         main() {
@@ -220,9 +228,6 @@ runs:
     - name: Set ISO path
       shell: bash
       run: |
-        # Set environment variables
-        echo "ISO_FULLNAME=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_ENV"
-        echo "XZ_FULLNAME=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_ENV"
         # Set outputs
         echo "iso_path=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_OUTPUT"
         echo "xz_path=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_OUTPUT"
