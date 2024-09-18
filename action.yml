@@ -8,6 +8,7 @@ inputs:
   tmate:
     description: "Enable debugging with tmate"
     required: false
+    default: true
 
 outputs:
   iso_path:
