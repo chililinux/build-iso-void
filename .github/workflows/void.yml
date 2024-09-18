@@ -202,8 +202,8 @@ jobs:
           if-no-files-found: warn
           include-hidden-files: false
 
-      - name: Criar release
-        id: create_release
+      - name: Criar release zip
+        id: create_release_zip
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
@@ -222,10 +222,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
+          upload_url: ${{ steps.create_release_zip.outputs.upload_url }} # URL gerada no passo da criação da release
           asset_path: ${{ env.ZIP_FULLNAME }} # Caminho do arquivo .tar.xz
           asset_name: ${{ env.REPO_NAME }}.zip
           asset_content_type: application/zip # Tipo correto para arquivos .zip
+
+      - name: Criar release .tar.xz
+        id: create_release_xz
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
+        with:
+          tag_name: ${{ github.run_id }}
+          release_name: Release ${{ needs.get-time.outputs.time }}
+          body: |
+            - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
+            - **Nome do Repositório:** ${{ env.REPO_NAME }}
+          draft: false
+          prerelease: false
 
       - name: Fazer upload do arquivo .tar.xz no release
         id: upload-release-asset-tar-xz
@@ -233,7 +247,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
+          upload_url: ${{ steps.create_release_xz.outputs.upload_url }} # URL gerada no passo da criação da release
           asset_path: ${{ env.XZ_FULLNAME }} # Caminho do arquivo .tar.xz
           asset_name: ${{ env.REPO_NAME }}.tar.gz
           asset_content_type: application/x-xz # Tipo correto para arquivos .xz
