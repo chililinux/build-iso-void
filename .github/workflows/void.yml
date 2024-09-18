@@ -145,11 +145,9 @@ jobs:
           if [[ -f "${{ env.XZ_FULLNAME }}" ]]; then
             md5sum "${{ env.XZ_FULLNAME }}" > "${{ env.XZ_FULLNAME }}.md5"
             echo "MD5 '$XZ_FULLNAME.md5' hash calculated and saved:"
-            # HASH#########################################################
             cat "${{ env.XZ_FULLNAME }}.md5"
-            # HASH#########################################################
           else
-            echo "ERRO: "${{ env.XZ_FULLNAME }}" file not found at ${{ env.WORK_PATH }}"
+            echo "ERRO: ${{ env.XZ_FULLNAME }} file not found at ${{ env.WORK_PATH }}"
             exit 1
           fi
 
@@ -157,7 +155,7 @@ jobs:
         id: prepare-iso
         shell: bash
         run: |
-          ls -lh
+          ls -lha
           release=${{ env.XZ_BASENAME }} # Apenas obtém o nome do arquivo com extensão
           echo "release_name=${release}" >> $GITHUB_ENV
           if zip \
@@ -169,6 +167,7 @@ jobs:
               ${{ env.XZ_FULLNAME }}.md5; then
             echo "ZIP_FULLNAME=${release}.zip" >> "$GITHUB_ENV"
             echo "${ZIP_FULLNAME} prepared for release"
+            ls -lha
           else
             echo "ERRO: No preparo do arquivo ZIP para release"
             exit 1
@@ -185,15 +184,16 @@ jobs:
           echo "XZ Path from output=${{ steps.define-paths.outputs.xz_path }}"
 
           # ls -la "${{ env.WORK_PATH }}
-          ls -la "${{ env.WORK_PATH }}"
+          ls -lah "${{ env.WORK_PATH }}"
 
       - name: Upload FILES as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.XZ_BASENAME }} # Nome do artefato, ajustado para incluir a variável correta
+          name: ${{ env.ZIP_FULLNAME }}
           path: |
-            ${{ env.XZ_FULLNAME }}          # Caminho completo para o arquivo .tar.xz
-            ${{ env.XZ_FULLNAME }}.md5      # Se houver um arquivo .md5 para ser incluído
+            ${{ env.ZIP_FULLNAME }}
+            ${{ env.XZ_FULLNAME }}
+            ${{ env.XZ_FULLNAME }}.md5
           if-no-files-found: warn
           include-hidden-files: false
 
