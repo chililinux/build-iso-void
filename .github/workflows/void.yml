@@ -203,12 +203,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
-          tag_name: ${{ env.XZ_BASENAME }}      # Nome da tag para a release
-          release_name: Release ${{ env.time }} # Nome da release visível
+          tag_name: "${{ env.XZ_BASENAME }}-${{ needs.get-time.outputs.time }}"
+          release_name: Release ${{ needs.get-time.outputs.time }}
           body: |
             ## Descrição da Release
 
-            - **Data e Hora        :** ${{ env.time }}
+            - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
             - **Nome do Repositório:** ${{ env.REPO_NAME }}
 
           draft: false
