@@ -19,7 +19,7 @@ on:
         type: boolean
         description: "Enable debugging with tmate"
         required: false
-        default: true
+        default: false
 
 # Jobs do workflow
 jobs:
