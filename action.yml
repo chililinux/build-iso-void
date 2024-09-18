@@ -193,7 +193,10 @@ runs:
           #teste
           #touch void-x86_64-base-custom-20240917.tar.xz
           #efetivo
-          [[ ${{ inputs.tmate }} == 'true' ]] && ./mkrootfs || ./mkrootfs > /dev/null
+#         [[ ${{ inputs.tmate }} == 'true' ]] && ./mkrootfs || ./mkrootfs > /dev/null
+          echo "Arquivo 1 de teste" > arquivo1.txt
+          echo "Arquivo 2 de teste" > arquivo2.txt
+          tar -cvJf void-x86_64-base-custom-20240918.tar.xz arquivo1.txt arquivo2.txt
           popd
         }
 
