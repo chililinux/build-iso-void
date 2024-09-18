@@ -140,16 +140,18 @@ jobs:
       - name: Calculate FILES MD5 Hash
         shell: bash
         run: |
-          echo "Calculating MD5 hash for TAR.GZ file..."
-          echo "XZ_PATH is: '${{ env.XZ_PATH }}'"
-          if [[ -f "${{ env.XZ_PATH }}" ]]; then
-            md5sum "${{ env.XZ_PATH }}" > "${{ env.XZ_PATH }}.md5"
-            echo "MD5 hash calculated and saved:"
-            cat "${{ env.XZ_PATH }}.md5"
+          echo "Calculating MD5 hash for $XZ_FULLNAME file..."
+          echo "XZ_FULLNAME is: '${{ env.XZ_FULLNAME }}'"
+          if [[ -f "${{ env.XZ_FULLNAME }}" ]]; then
+            md5sum "${{ env.XZ_FULLNAME }}" > "${{ env.XZ_FULLNAME }}.md5"
+            echo "MD5 '$XZ_FULLNAME.md5' hash calculated and saved:"
+            cat "${{ env.XZ_FULLNAME }}.md5"
           else
-            echo "Error: TAR.XZ file not found at ${{ env.XZ_PATH }}"
+            echo "ERRO: "${{ env.XZ_FULLNAME }}" file not found at ${{ env.WORK_PATH }}"
             exit 1
           fi
+
+          exit 1
 
       - name: Prepare FILES for release
         id: prepare-iso

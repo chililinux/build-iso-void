@@ -218,7 +218,6 @@ runs:
         main
 
     - name: Set ISO path
-      id: set-iso-path
       shell: bash
       run: |
         # Set environment variables
