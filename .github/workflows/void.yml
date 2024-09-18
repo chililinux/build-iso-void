@@ -173,6 +173,8 @@ jobs:
           echo "ISO_PATH=${{ env.XZ_PATH }}"
           echo "XZ_BASENAME=${{ env.XZ_BASENAME }}"
           echo "XZ_PATH=${{ env.XZ_PATH }}"
+          echo "ISO Path from output: ${{ steps.define-paths.outputs.iso_path }}"
+          echo "XZ Path from output: ${{ steps.define-paths.outputs.xz_path }}"
           ls -la "${{ env.WORK_PATH }}"
 
       - name: Upload FILES as artifact
