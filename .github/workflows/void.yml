@@ -249,6 +249,6 @@ jobs:
         with:
           upload_url: ${{ steps.create_release_xz.outputs.upload_url }} # URL gerada no passo da criação da release
           asset_path: ${{ env.XZ_FULLNAME }} # Caminho do arquivo .tar.xz
-          asset_name: ${{ env.REPO_NAME }}.tar.xz
+          asset_name: ${{ env.XZ_BASENAME }}
           asset_content_type: application/x-xz # Tipo correto para arquivos .xz
 
