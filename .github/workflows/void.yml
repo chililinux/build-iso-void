@@ -44,17 +44,16 @@ jobs:
         run: |
           repo_name=$(basename $GITHUB_REPOSITORY)
           echo "REPOSITORY_NAME=$repo_name" >> $GITHUB_ENV
-        # Define o nome do repositório como saída do job
-        - name: Definir saída do job
-          id: set-output
-          run: echo "::set-output name=repo_name::$repo_name"
+          - name: Definir saída do job
+            id: set-output
+            run: echo "::set-output name=repo_name::$repo_name"
 
   build:
     name: Build ISO ${{ github.event.client_payload.edition || 'Unknown' }}
     runs-on: ubuntu-latest
     needs: [get-time, set-repo-name] # Depende do job get-time para obter a hora atual e do job set-repo-name para obter o nome do repositório
     env:
-      REPO_NAME: ${{ needs.set-repo-name.outputs.REPOSITORY_NAME }}  # Acesso à variável de ambiente definida no job anterior
+      REPO_NAME: ${{ needs.set-repo-name.outputs.REPOSITORY_NAME }} # Acesso à variável de ambiente definida no job anterior
     container:
       image: vcatafesta/voidlinux-docker:latest
       options: --privileged
