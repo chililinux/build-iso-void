@@ -153,16 +153,26 @@ jobs:
             exit 1
           fi
 
-      - name: Prepare FILES for release
+      - name: Prepare ZIP file for release
         id: prepare-iso
         shell: bash
         run: |
           ls -lh
-          release=$(basename "${{ env.XZ_PATH }}")  # Apenas obtém o nome do arquivo com extensão
-          zip -j -0 -s 2000m ${release}.zip ${{ env.XZ_PATH }}
+          release=${{ env.XZ_BASENAME }} # Apenas obtém o nome do arquivo com extensão
           echo "release_name=${release}" >> $GITHUB_ENV
-          echo "XZ_BASENAME=$(basename "${{ env.XZ_PATH }}")" >> $GITHUB_ENV
-          echo "TAR.GZ prepared for release"
+          if zip \
+              --junk-paths \
+              --store \
+              -s 2000m \
+              ${release}.zip \
+              ${{ env.XZ_FULLNAME }} \
+              ${{ env.XZ_FULLNAME }}.md5; then
+            echo "TAR.GZ prepared for release"
+            echo "ZIP_FULLNAME=${release}.zip" >> "$GITHUB_ENV"
+          else
+            echo "ERRO: No preparo do arquivo ZIP para release"
+            exit 1
+          fi
 
       - name: Debug environment variables and List Files
         run: |
@@ -170,6 +180,7 @@ jobs:
           echo "ISO_FULLNAME=${{ env.XZ_FULLNAME }}"
           echo "XZ_BASENAME=${{ env.XZ_BASENAME }}"
           echo "XZ_FULLNAME=${{ env.XZ_FULLNAME }}"
+          echo "ZIP_FULLNAME=${{ env.XZ_FULLNAME }}"
           echo "ISO Path from output: ${{ steps.define-paths.outputs.iso_path }}"
           echo "XZ Path from output: ${{ steps.define-paths.outputs.xz_path }}"
           ls -la "${{ env.WORK_PATH }}"
