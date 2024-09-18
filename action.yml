@@ -231,7 +231,7 @@ runs:
       shell: bash
       run: |
         FILENAME="$XZ_BASENAME"
-        TAG_NAME=$(echo "$FILENAME" | grep -oP '\d{8}')
+        TAG_NAME="$(grep -oP '\d{8}' "$FILENAME")-$(date +%H-%M)"
         echo "XZ_TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
     - name: Set ISO path
