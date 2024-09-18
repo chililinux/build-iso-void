@@ -49,7 +49,6 @@ jobs:
     needs: [get-time, set-repo-name] # Depende do job get-time para obter a hora atual e do job set-repo-name para obter o nome do repositório
     env:
       REPO_NAME: ${{ needs.set-repo-name.outputs.REPOSITORY_NAME }} # Acesso à variável de ambiente definida no job anterior
-      TIME: ${{ needs.get-time.outputs.time }}                      # Acesso à variável de ambiente definida no job anterior
     container:
       image: vcatafesta/voidlinux-docker:latest
       options: --privileged
@@ -209,9 +208,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Definir o token novamente aqui se necessário
         with:
           tag_name: ${{ github.run_id }}
-          release_name: Release ${{ env.TIME }}
+          release_name: Release ${{ needs.get-time.outputs.time }}
           body: |
-            - **Data e Hora        :** ${{ env.TIME }}
+            - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
             - **Nome do Repositório:** ${{ env.REPO_NAME }}
           draft: false
           prerelease: false
