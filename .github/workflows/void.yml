@@ -30,9 +30,9 @@ on:
         required: false
         default: false
 
-schedule:
-  - cron: "0 6 * * *" # Roda todo dia às 06:00 UTC
-  - cron: "0 18 * * 5" # Roda toda sexta-feira às 18:00 UTC
+  schedule:
+    - cron: "0 6 * * *" # Roda todo dia às 06:00 UTC
+    - cron: "0 18 * * 5" # Roda toda sexta-feira às 18:00 UTC
 
 # Jobs do workflow
 jobs:
