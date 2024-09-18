@@ -229,6 +229,7 @@ runs:
 
     - name: Extrair data do nome do arquivo .tar.xz e definir tag_name
       id: set-tag-name
+      shell: bash
       run: |
         FILENAME="$XZ_BASENAME"
         TAG_NAME=$(echo "$FILENAME" | grep -oP '\d{8}')
