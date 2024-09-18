@@ -27,7 +27,8 @@ jobs:
     steps:
       - name: Obter a hora atual
         id: time
-        run: echo "::set-output name=time::$(date +'%Y.%m.%d-%H%M')"
+        #run: echo "::set-output name=time::$(date +'%Y.%m.%d-%H%M')"       #antigo
+        run: echo "time=$(date +'%Y.%m.%d-%H%M')" >> $GITHUB_OUTPUT
 
   # Job para definir o nome do repositório
   set-repo-name:
@@ -37,7 +38,8 @@ jobs:
     steps:
       - name: Obter nome do repositório
         id: get-repo-name
-        run: echo "::set-output name=repo_name::$(basename $GITHUB_REPOSITORY)"
+        #run: echo "::set-output name=repo_name::$(basename $GITHUB_REPOSITORY)"    #antigo
+        run: echo "repo_name=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_OUTPUT
 
   build:
     name: Build ISO ${{ github.event.client_payload.edition || 'Unknown' }}
@@ -183,7 +185,7 @@ jobs:
             ${{ env.XZ_PATH }}
             ${{ env.XZ_PATH }}.md5
           tag_name: ${{ env.XZ_BASENAME }}
-          release_name: Release ${{ needs.get-time.outputs.time }}
+          name: Release ${{ needs.get-time.outputs.time }}
           body: |
             ## Descrição da Release
 
@@ -199,7 +201,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.XZ_PATH }}
-          asset_name: ${{ env.XZ_PATH }}
-          asset_content_type: application/gzip
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
+          asset_path: ${{ env.XZ_PATH }}                             # Caminho do arquivo .tar.xz
+          asset_name: ${{ env.XZ_BASENAME }}                         # Nome do arquivo sem o caminho completo
+          #asset_content_type: application/gzip
+          asset_content_type: application/x-xz                       # Tipo correto para arquivos .xz
