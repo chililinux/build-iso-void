@@ -205,9 +205,8 @@ runs:
           echo "OUTPUT_XZ_PATH_NAME=$OUTPUT_XZ_PATH_NAME" >> "$GITHUB_ENV"    # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
           echo "ISO_BASENAME=$ISO_BASENAME" >> "$GITHUB_ENV"                  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
           echo "XZ_BASENAME=$XZ_BASENAME" >> "$GITHUB_ENV"                    # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
-          echo "OUTPUT_ISO_PATH_NAME: $OUTPUT_ISO_PATH_NAME"
-          echo "OUTPUT_XZ_PATH_NAME: $OUTPUT_XZ_PATH_NAME"
 
+          mv -fv "$OUTPUT_ISO_PATH_NAME" "$WORK_PATH/" || echo "Failed to move ISO file"
           mv -fv "$OUTPUT_XZ_PATH_NAME" "$WORK_PATH/" || echo "Failed to move tar.xz file"
           echo "iso_path=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_OUTPUT"
           echo "xz_path=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_OUTPUT"
