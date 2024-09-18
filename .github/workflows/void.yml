@@ -28,7 +28,7 @@ on:
         type: boolean
         description: "Enable debugging with tmate"
         required: false
-        default: false
+        default: true
 
   schedule:
     - cron: "0 6 * * *" # Roda todo dia às 06:00 UTC
@@ -267,29 +267,34 @@ jobs:
 
       - name: Clonar repositório de destino
         run: |
-          git clone https://github.com/voidlinux-br/void-installer.git
+          git clone https://github.com/voidlinux-br/void-installer.git "${{ env.WORK_PATH }}/void-installer"
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
 
       - name: Copiar arquivo .tar.gz para o repositório de destino
         run: |
+          pushd "${{ env.WORK_PATH }}/void-installer"
           cp ${{ env.XZ_FULLNAME }} void-installer/
+          popd
 
       - name: Configurar Git para commit
         run: |
-          cd void-installer
+          pushd "${{ env.WORK_PATH }}/void-installer"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          popd
 
       - name: Fazer commit do arquivo .tar.gz
         run: |
-          cd void-installer
+          pushd "${{ env.WORK_PATH }}/void-installer"
           git add ${{ env.XZ_FULLNAME }}
           git commit -m "Adicionar arquivo tar.gz gerado automaticamente"
+          popd
 
       - name: Empurrar mudanças para o repositório de destino
         run: |
-          cd void-installer
+          pushd "${{ env.WORK_PATH }}/void-installer"
           git push origin main
+          popd
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
