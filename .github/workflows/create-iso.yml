@@ -103,7 +103,17 @@ jobs:
             bash \
             tree \
             duf \
-            gettext
+            gettext \
+            rsync \
+            util-linux \
+            coreutils \
+            cat \
+            sed \
+            grep \
+            btrfs-progs \
+            e2fsfsprogs \
+            extfatprogs \
+            xfsprogs
 
       - name: Create user builduser
         run: |

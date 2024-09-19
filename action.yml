@@ -138,7 +138,7 @@ runs:
 
         build_iso() {
           echo "########################## RESUMO #################################"
-          echo "BUILD COMMAND            : ./mklive"
+          echo "BUILD COMMAND            : ./mkiso"
           echo "PROFILE_PATH             : $PROFILE_PATH"
           echo "EDITION                  : $EDITION"
           echo "MANJAROBRANCH            : $MANJAROBRANCH"
