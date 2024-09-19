@@ -194,7 +194,7 @@ jobs:
               --junk-paths \
               --store \
               -s 2000m \
-              ${release}.iso \
+              ${release}.zip \
               ${{ env.ISO_FULLNAME }} \
               ${{ env.ISO_FULLNAME }}.md5; then
             echo "ISO_FULLNAME=${{ env.WORK_PATH }}/${release}.iso" >> "$GITHUB_ENV"
