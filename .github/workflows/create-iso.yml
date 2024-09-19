@@ -110,7 +110,7 @@ jobs:
             sed \
             grep \
             btrfs-progs \
-            e2fsfsprogs \
+            e2fsprogs \
             extfatprogs \
             xfsprogs
 
