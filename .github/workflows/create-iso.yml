@@ -28,7 +28,7 @@ on:
           - live-gnome
           - live-kde
           - live-all
-        default: "XFCE CUSTOM"
+        default: "live-base-custom"
       tmate:
         type: boolean
         description: "Enable debugging with tmate"
@@ -64,7 +64,7 @@ jobs:
         run: echo "repo_name=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_OUTPUT
 
   build:
-    name: Build ${{ github.event.client_payload.edition || 'live-base-custom' }}
+    name: Build ${{ github.event.client_payload.edition || github.event.inputs.edition || 'live-base-custom' }}
     runs-on: ubuntu-latest
     needs: [get-time, set-repo-name] # Depende do job get-time para obter a hora atual e do job set-repo-name para obter o nome do repositório
     env:
