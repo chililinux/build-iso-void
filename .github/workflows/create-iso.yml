@@ -107,7 +107,6 @@ jobs:
             rsync \
             util-linux \
             coreutils \
-            cat \
             sed \
             grep \
             btrfs-progs \
