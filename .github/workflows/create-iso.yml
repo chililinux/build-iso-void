@@ -111,7 +111,7 @@ jobs:
             grep \
             btrfs-progs \
             e2fsprogs \
-            extfatprogs \
+            exfatprogs \
             xfsprogs
 
       - name: Create user builduser
