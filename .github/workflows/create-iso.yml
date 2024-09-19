@@ -72,8 +72,8 @@ jobs:
     container:
       image: vcatafesta/voidlinux-docker:latest
       options: --privileged
-        volumes:
-          - /mnt/lfs:/mnt/lfs
+      volumes:
+        - /mnt/lfs:/mnt/lfs
 
     steps:
       - name: Set up volume directory on HOST
