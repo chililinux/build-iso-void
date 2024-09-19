@@ -32,7 +32,7 @@ on:
         type: boolean
         description: "Enable debugging with tmate"
         required: false
-        default: true
+        default: false
 
   schedule:
     - cron: "0 6 * * *" # Roda todo dia às 06:00 UTC
