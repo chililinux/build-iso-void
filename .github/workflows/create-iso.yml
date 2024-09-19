@@ -232,8 +232,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
-          tag_name: ${{ github.run_id }}_zip
-          release_name: Release ${{ needs.get-time.outputs.time }}
+          tag_name: ${{ env.ISO_TAG_NAME }}
+          release_name: Release ${{ env.ISO_TAG_NAME }}
           body: |
             - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
             - **Nome do Repositório:** ${{ env.REPO_NAME }}
@@ -251,16 +251,16 @@ jobs:
           asset_name: ${{ env.REPO_NAME }}.zip
           asset_content_type: application/iso # Tipo correto para arquivos .iso
 
+      - name: Verificar arquivo .iso
+        run: ls -lh ${{ env.ISO_FULLNAME }} # Verifique se o arquivo .iso foi gerado corretamente
+
       - name: Configurar chave SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Verificar arquivo .iso
-        run: ls -lh ${{ env.ISO_FULLNAME }} # Verifique se o arquivo .iso foi gerado corretamente
+          ssh-keyscan -p 65002 ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
       - name: Enviar arquivo ISO para o servidor via SCP com porta customizada
         run: |
-          scp -P 65002 ${{ env.ISO_FULLNAME }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/u537062342/void/current
+          scp -p 65002 ${{ env.ISO_FULLNAME }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/u537062342/void/current
