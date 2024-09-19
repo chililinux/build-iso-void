@@ -299,9 +299,10 @@ jobs:
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
-          git add ${{ env.XZ_FULLNAME }}
-          git add ${{ env.XZ_FULLNAME }}
+          ls -lha
+          git add .
           git commit -m "Gerado e adicionado automaticamente pelo Github Actions"
+          git status
           popd
 
       - name: Empurrar mudanças para o repositório de destino
