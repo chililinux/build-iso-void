@@ -151,7 +151,7 @@ jobs:
           # Tokens e segredos
           github_token: ${{ secrets.ORGANIZATION_TOKEN }}
 
-      - name: Calculate FILES MD5 Hash
+      - name: Calculate MD5 Hash of files
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}"
@@ -283,6 +283,7 @@ jobs:
           pushd "${{ env.WORK_PATH }}/void-installer"
           cp -fv "${{ env.XZ_FULLNAME }}"     void-x86_64-base-custom-current.tar.xz
           cp -fv "${{ env.XZ_FULLNAME }}.md5" void-x86_64-base-custom-current.tar.xz.md5
+          sed -i 's/void-x86_64-base-custom-[0-9]\{8\}\.tar\.xz$/void-x86_64-base-custom-current.tar.xz/' void-x86_64-base-custom-current.tar.xz.md5
           popd
 
       - name: Configurar Git para commit
@@ -298,7 +299,8 @@ jobs:
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}/void-installer"
-          git add .
+          git add ${{ env.XZ_FULLNAME }}
+          git add ${{ env.XZ_FULLNAME }}
           git commit -m "Gerado e adicionado automaticamente pelo Github Actions"
           popd
 
