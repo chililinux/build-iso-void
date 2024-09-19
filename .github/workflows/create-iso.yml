@@ -36,7 +36,7 @@ on:
         default: false
 
   schedule:
-    - cron: "0 6 * * *" # Roda todo dia às 06:00 UTC
+    #- cron: "0 6 * * *" # Roda todo dia às 06:00 UTC
     - cron: "0 18 * * 5" # Roda toda sexta-feira às 18:00 UTC
 
 # Jobs do workflow
@@ -258,11 +258,11 @@ jobs:
 
       - name: Configurar chave SSH e Adicionar chave do host remoto ao known_hosts
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p 65002 -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+          mkdir -p /root/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /root/.ssh/id_rsa
+          chmod 600 /root/.ssh/id_rsa
+          ssh-keyscan -p 65002 -H ${{ secrets.SERVER_HOST }} >> /root/.ssh/known_hosts
 
       - name: Enviar arquivo ISO para o servidor via SCP com porta customizada
         run: |
-          scp -P 65002 -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.ISO_FULLNAME }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/current
+          scp -P 65002 -v -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa ${{ env.ISO_FULLNAME }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/current
