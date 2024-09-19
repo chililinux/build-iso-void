@@ -161,7 +161,8 @@ runs:
           #echo "Arquivo 2 de teste" > arquivo2.txt
           #tar -cvJf void-x86_64-base-custom-20240918.tar.xz arquivo1.txt arquivo2.txt
           #efetivo
-          [[ ${{ inputs.tmate }} == 'true' ]] && ./mkiso || ./mkiso > /dev/null
+          #[[ ${{ inputs.tmate }} == 'true' ]] && ./mkiso || ./mkiso > /dev/null
+          ./mkiso
           popd
         }
 
