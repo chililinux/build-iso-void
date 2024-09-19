@@ -113,7 +113,7 @@ runs:
       env:
         DEBUG: ${{ inputs.tmate }}
         DISTRONAME: ${{ inputs.name }}
-        EDITION: ${{ inputs.edition }}
+        EDITION: ${{ inputs.edition || github.event.client_payload.edition || 'live-base-custom' }}
         MANJAROBRANCH: ${{ inputs.manjaro_branch }}
         COMMUNITYBRANCH: ${{ inputs.community_branch }}
         BIGBRANCH: ${{ inputs.biglinux_branch }}

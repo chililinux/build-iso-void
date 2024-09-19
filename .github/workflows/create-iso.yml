@@ -254,7 +254,7 @@ jobs:
           asset_content_type: application/iso # Tipo correto para arquivos .iso
 
       - name: Verificar arquivo .iso
-        run: ls -lh ${{ env.ISO_FULLNAME }} # Verifique se o arquivo .iso foi gerado corretamente
+        run: ls -lah --color=auto ${{ env.ISO_FULLNAME }} # Verifique se o arquivo .iso foi gerado corretamente
 
       - name: Configurar chave SSH e Adicionar chave do host remoto ao known_hosts
         run: |
@@ -265,4 +265,9 @@ jobs:
 
       - name: Enviar arquivo ISO para o servidor via SCP com porta customizada
         run: |
-          scp -P 65002 -v -o StrictHostKeyChecking=no -i /root/.ssh/id_rsa ${{ env.ISO_FULLNAME }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/current
+          scp -P 65002 \
+              -v \
+              -o StrictHostKeyChecking=no \
+              -i /root/.ssh/id_rsa \
+              ${{ env.ISO_FULLNAME }} \
+              ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/current
