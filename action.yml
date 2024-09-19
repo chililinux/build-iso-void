@@ -138,38 +138,7 @@ runs:
 
         build_iso() {
           echo "########################## RESUMO #################################"
-          echo "BUILD COMMAND            : buildiso ${SCOPE:+-f} -p community/$EDITION -b $MANJAROBRANCH -k ${KERNEL_NAME} ${OFFICE:+-o}"
-          echo "PROFILE_PATH             : $PROFILE_PATH"
-          echo "EDITION                  : $EDITION"
-          echo "MANJAROBRANCH            : $MANJAROBRANCH"
-          echo "COMMUNITYBRANCH          : $COMMUNITYBRANCH"
-          echo "BIGLINUXBRANCH           : $BIGBRANCH"
-          echo "KERNEL_VER               : ${KERNEL_VER}"
-          echo "KERNEL_NAME              : ${KERNEL_NAME}"
-          echo "SCOPE                    : $SCOPE"
-          echo "OFFICE                   : $OFFICE"
-          echo "###################################################################"
-          echo "WORK_PATH                : $WORK_PATH"
-          echo "PROFILE_PATH             : $PROFILE_PATH"
-          echo "ISO profiles path        : $PROFILE_PATH/$EDITION"
-          echo "PATH_MANJARO_ISO_PROFILES: $PATH_MANJARO_ISO_PROFILES"
-          echo "###################################################################"
-          #echo "ROOT_RUN_DIR             : $(< /root/.config/manjaro-tools/iso-profiles.conf)"
-          #echo "BUILDUSER_RUN_DIR        : $(< /home/builduser/.config/manjaro-tools/iso-profiles.conf)"
-          echo "###################################################################"
-
-          if [[ "$DEBUG" == 'true' ]]; then
-            #sudo buildiso "${SCOPE:+-f}" -p "community/$EDITION" -b "$MANJAROBRANCH" -k "${KERNEL_NAME}" "${OFFICE:+-o}"
-            :
-          else
-            #sudo buildiso "${SCOPE:+-f}" -p "community/$EDITION" -b "$MANJAROBRANCH" -k "${KERNEL_NAME}" "${OFFICE:+-o}" > /dev/null
-            :
-          fi
-        }
-
-        build_mkroot_fs() {
-          echo "########################## RESUMO #################################"
-          echo "BUILD COMMAND            : buildiso ${SCOPE:+-f} -p community/$EDITION -b $MANJAROBRANCH -k ${KERNEL_NAME} ${OFFICE:+-o}"
+          echo "BUILD COMMAND            : ./mklive"
           echo "PROFILE_PATH             : $PROFILE_PATH"
           echo "EDITION                  : $EDITION"
           echo "MANJAROBRANCH            : $MANJAROBRANCH"
@@ -195,7 +164,7 @@ runs:
           #echo "Arquivo 2 de teste" > arquivo2.txt
           #tar -cvJf void-x86_64-base-custom-20240918.tar.xz arquivo1.txt arquivo2.txt
           #efetivo
-          [[ ${{ inputs.tmate }} == 'true' ]] && ./mkrootfs || ./mkrootfs > /dev/null
+          [[ ${{ inputs.tmate }} == 'true' ]] && ./mkiso || ./mkiso > /dev/null
           popd
         }
 
@@ -223,7 +192,7 @@ runs:
         }
 
         main() {
-          build_mkroot_fs
+          build_iso
           cleanup_and_move_files
         }
 
