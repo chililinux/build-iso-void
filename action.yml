@@ -184,7 +184,6 @@ runs:
           build_iso
           cleanup_and_move_files
         }
-
         main
 
     - name: Extrair data do nome do arquivo .tar.xz e definir tag_name
