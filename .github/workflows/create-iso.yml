@@ -49,7 +49,8 @@ jobs:
     steps:
       - name: Obter a hora atual
         id: time
-        run: echo "::set-output name=time::$(date +'%Y.%m.%d-%H%M')"
+        #run: echo "::set-output name=time::$(date +'%Y.%m.%d-%H%M')"
+        run: echo "time=$(date +'%Y.%m.%d-%H%M')" >> $GITHUB_OUTPUT
 
   # Job para definir o nome do repositório
   set-repo-name:
@@ -59,8 +60,8 @@ jobs:
     steps:
       - name: Obter nome do repositório
         id: get-repo-name
-        #run: echo "repo_name=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_OUTPUT
-        run: echo "::set-output name=repo_name::$(basename $GITHUB_REPOSITORY)"
+        #run: echo "::set-output name=repo_name::$(basename $GITHUB_REPOSITORY)"
+        run: echo "repo_name=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_OUTPUT
 
   build:
     name: Build void-x86_64-${{ github.event.client_payload.edition || 'live-base-custom' }}
