@@ -72,15 +72,13 @@ jobs:
     container:
       image: vcatafesta/voidlinux-docker:latest
       options: --privileged
-    #      volumes:
-    #        - /mnt/var_lib_manjaro_tools_buildiso:/var/lib/manjaro-tools/buildiso
-    #        - /mnt/var_cache_manjaro_tools_iso:/var/cache/manjaro-tools/iso
+        volumes:
+          - /mnt/lfs:/mnt/lfs
 
     steps:
-      #      - name: Set up volume directory on HOST
-      #        run: |
-      #          mkdir -p /mnt/var_lib_manjaro_tools_buildiso
-      #          mkdir -p /mnt/var_cache_manjaro_tools_iso
+      - name: Set up volume directory on HOST
+        run: |
+          mkdir -p /mnt/lfs
 
       - name: Install Required Libraries
         run: |
