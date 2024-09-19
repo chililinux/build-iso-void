@@ -112,6 +112,7 @@ jobs:
             btrfs-progs \
             e2fsprogs \
             exfatprogs \
+            dosfstools \
             xfsprogs
 
       - name: Create user builduser
