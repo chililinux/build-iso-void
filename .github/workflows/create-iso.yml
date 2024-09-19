@@ -19,14 +19,14 @@ on:
         type: choice
         description: "Edition"
         options:
-          - XFCE CUSTOM
-          - XFCE BASE
-          - AWESOME
-          - ENLIGHTNMENT
-          - FLUXBOX
-          - GNOME
-          - KDE PLASMA
-          - ALL X
+          - base-custom
+          - xfce-custom
+          - awesome
+          - enlightnment
+          - fluxbox
+          - gnome
+          - kde
+          - all X
         default: "XFCE CUSTOM"
       tmate:
         type: boolean
@@ -263,4 +263,4 @@ jobs:
 
       - name: Enviar arquivo ISO para o servidor via SCP com porta customizada
         run: |
-          scp -p 65002 ${{ env.ISO_FULLNAME }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/u537062342/void/current
+          scp -P 65002 ${{ env.ISO_FULLNAME }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/u537062342/void/current
