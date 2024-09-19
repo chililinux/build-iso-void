@@ -161,7 +161,18 @@ runs:
           #tar -cvJf void-x86_64-base-custom-20240918.tar.xz arquivo1.txt arquivo2.txt
           #efetivo
           #[[ ${{ inputs.tmate }} == 'true' ]] && ./mkiso || ./mkiso > /dev/null
-          ./mkiso
+
+          case $EDITION in
+            live-base-custom)  ./mkiso    ;;
+            live-xfce-base)    ./mkiso -X ;;
+            live-xfce-custom)  ./mkiso -Y ;;
+            live-awesome)      ./mkiso -W ;;
+            live-enlightnment) ./mkiso -E ;;
+            live-fluxbox)      ./mkiso -F ;;
+            live-gnome)        ./mkiso -G ;;
+            live-kde)          ./mkiso -P ;;
+            live-all)          ./mkiso -A ;;
+          esac
           popd
         }
 
