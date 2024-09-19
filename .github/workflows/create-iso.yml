@@ -170,39 +170,39 @@ jobs:
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}"
-          echo "Calculating MD5 hash for: ${{ env.XZ_FULLNAME }} file..."
-          echo "XZ_BASENAME is: '${{ env.XZ_BASENAME }}'"
-          if [[ -f "${{ env.XZ_BASENAME }}" ]]; then
-            md5sum "${{ env.XZ_BASENAME }}" > "${{ env.XZ_BASENAME }}.md5"
-            echo "MD5 '$XZ_BASENAME.md5' hash calculated and saved:"
-            cat "${{ env.XZ_BASENAME }}.md5"
+          echo "Calculating MD5 hash for: ${{ env.ISO_FULLNAME }} file..."
+          echo "ISO_BASENAME is: '${{ env.ISO_BASENAME }}'"
+          if [[ -f "${{ env.ISO_BASENAME }}" ]]; then
+            md5sum "${{ env.ISO_BASENAME }}" > "${{ env.ISO_BASENAME }}.md5"
+            echo "MD5 '$ISO_BASENAME.md5' hash calculated and saved:"
+            cat "${{ env.ISO_BASENAME }}.md5"
           else
-            echo "ERRO: ${{ env.XZ_BASENAME }} file not found at ${{ env.WORK_PATH }}"
+            echo "ERRO: ${{ env.ISO_BASENAME }} file not found at ${{ env.WORK_PATH }}"
             exit 1
           fi
           popd
 
-      - name: Prepare ZIP file for release
+      - name: Prepare ISO file for release
         id: prepare-iso
         shell: bash
         run: |
           ls -lha
-          release=${{ env.XZ_BASENAME }} # Apenas obtém o nome do arquivo com extensão
-          release="${release%.tar.xz}"
+          release=${{ env.ISO_BASENAME }} # Apenas obtém o nome do arquivo com extensão
+          release="${release%.iso}"
           echo "release_name=${release}" >> $GITHUB_ENV
           if zip \
               --junk-paths \
               --store \
               -s 2000m \
-              ${release}.zip \
-              ${{ env.XZ_FULLNAME }} \
-              ${{ env.XZ_FULLNAME }}.md5; then
-            echo "ZIP_FULLNAME=${{ env.WORK_PATH }}/${release}.zip" >> "$GITHUB_ENV"
-            echo "ZIP_BASENAME=${release}.zip"                        >> "$GITHUB_ENV"
-            echo "${ZIP_FULLNAME} prepared for release"
+              ${release}.iso \
+              ${{ env.ISO_FULLNAME }} \
+              ${{ env.ISO_FULLNAME }}.md5; then
+            echo "ISO_FULLNAME=${{ env.WORK_PATH }}/${release}.iso" >> "$GITHUB_ENV"
+            echo "ISO_BASENAME=${release}.iso"                      >> "$GITHUB_ENV"
+            echo "${ISO_FULLNAME} prepared for release"
             ls -lha
           else
-            echo "ERRO: No preparo do arquivo ZIP para release"
+            echo "ERRO: No preparo do arquivo ISO para release"
             exit 1
           fi
 
@@ -210,13 +210,7 @@ jobs:
         run: |
           echo "ISO_BASENAME=${{ env.ISO_BASENAME }}"
           echo "ISO_FULLNAME=${{ env.ISO_FULLNAME }}"
-          echo "XZ_BASENAME=${{ env.XZ_BASENAME }}"
-          echo "XZ_FULLNAME=${{ env.XZ_FULLNAME }}"
-          echo "ZIP_FULLNAME=${{ env.ZIP_FULLNAME }}"
           echo "ISO Path from output=${{ steps.define-paths.outputs.iso_path }}"
-          echo "XZ Path from output=${{ steps.define-paths.outputs.xz_path }}"
-
-          # ls -la "${{ env.WORK_PATH }}
           ls -lah "${{ env.WORK_PATH }}"
 
       - name: Upload FILES as artifact
@@ -224,107 +218,35 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
-          name: ${{ env.ZIP_BASENAME }}
+          name: ${{ env.ISO_BASENAME }}
           path: |
-            ${{ env.ZIP_FULLNAME }}
-            ${{ env.XZ_FULLNAME }}
-            ${{ env.XZ_FULLNAME }}.md5
+            ${{ env.ISO_FULLNAME }}
+            ${{ env.ISO_FULLNAME }}
+            ${{ env.ISO_FULLNAME }}.md5
           if-no-files-found: warn
           include-hidden-files: false
 
-      - name: Criar release zip
-        id: create_release_zip
+      - name: Criar release iso
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           tag_name: ${{ github.run_id }}_zip
-          release_name: Release ${{ needs.get-time.outputs.time }}_zip
+          release_name: Release ${{ needs.get-time.outputs.time }}
           body: |
             - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
             - **Nome do Repositório:** ${{ env.REPO_NAME }}
           draft: false
           prerelease: false
 
-      - name: Fazer upload do arquivo .zip no release
-        id: upload-release-asset-zip
+      - name: Fazer upload do arquivo .iso no release
+        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release_zip.outputs.upload_url }} # URL gerada no passo da criação da release
-          asset_path: ${{ env.ZIP_FULLNAME }} # Caminho do arquivo .zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
+          asset_path: ${{ env.ISO_FULLNAME }} # Caminho do arquivo .iso
           asset_name: ${{ env.REPO_NAME }}.zip
-          asset_content_type: application/zip # Tipo correto para arquivos .zip
-
-      - name: Criar release .tar.xz
-        id: create_release_xz
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
-        with:
-          tag_name: ${{ env.XZ_TAG_NAME }}
-          release_name: Release ${{ env.XZ_TAG_NAME }}
-          body: |
-            - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
-            - **Nome do Repositório:** ${{ env.REPO_NAME }}
-          draft: false
-          prerelease: false
-
-      - name: Fazer upload do arquivo .tar.xz no release
-        id: upload-release-asset-tar-xz
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release_xz.outputs.upload_url }} # URL gerada no passo da criação da release
-          asset_path: ${{ env.XZ_FULLNAME }} # Caminho do arquivo .tar.xz
-          asset_name: ${{ env.XZ_BASENAME }}
-          asset_content_type: application/x-xz # Tipo correto para arquivos .xz
-
-      - name: Clonar repositório de destino https://github.com/voidlinux-br/void-installer.git
-        shell: bash
-        run: |
-          pushd "${{ env.WORK_PATH }}"
-          git clone --depth=1 https://github.com/voidlinux-br/void-installer.git
-          popd
-        env:
-          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
-
-      - name: Copiar arquivo .tar.gz para o repositório de destino
-        shell: bash
-        run: |
-          ls -lha ${{ env.WORK_PATH }}
-          pushd "${{ env.WORK_PATH }}/void-installer"
-          cp -fv "${{ env.XZ_FULLNAME }}"     void-x86_64-base-custom-current.tar.xz
-          cp -fv "${{ env.XZ_FULLNAME }}.md5" void-x86_64-base-custom-current.tar.xz.md5
-          sed -i 's/void-x86_64-base-custom-[0-9]\{8\}\.tar\.xz$/void-x86_64-base-custom-current.tar.xz/' void-x86_64-base-custom-current.tar.xz.md5
-          popd
-
-      - name: Configurar Git para commit
-        shell: bash
-        run: |
-          pushd "${{ env.WORK_PATH }}/void-installer"
-          git config --global user.email "vctafesta@gmail.com"
-          git config --global user.name "GitHub Actions"
-          git remote set-url origin https://x-access-token:${{ secrets.ORGANIZATION_TOKEN }}@github.com/voidlinux-br/void-installer.git
-          popd
-
-      - name: Fazer commit do arquivo .tar.gz
-        shell: bash
-        run: |
-          pushd "${{ env.WORK_PATH }}/void-installer"
-          ls -lha
-          git add .
-          git commit -m "Gerado e adicionado automaticamente pelo Github Actions"
-          git status
-          popd
-
-      - name: Empurrar mudanças para o repositório de destino
-        shell: bash
-        run: |
-          pushd "${{ env.WORK_PATH }}/void-installer"
-          git push origin main
-          popd
-        env:
-          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
+          asset_content_type: application/iso # Tipo correto para arquivos .iso

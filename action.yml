@@ -14,9 +14,6 @@ outputs:
   iso_path:
     description: "Path to the generated ISO file"
     value: ${{ steps.build.outputs.iso_path }}
-  xz_path:
-    description: "Path to the generated TAR.XZ file"
-    value: ${{ steps.build.outputs.xz_path }}
   release_name:
     description: "Name of the release"
     value: ${{ steps.prepare-iso.outputs.release_name }}
@@ -170,24 +167,15 @@ runs:
 
         cleanup_and_move_files() {
           OUTPUT_ISO_PATH_NAME=$(find "$WORK_PATH/void-mklive" -type f -name "*.iso" -exec stat -c '%Y %n' {} + | sort -nr | awk 'NR==1 {print $2}')
-          OUTPUT_XZ_PATH_NAME=$(find "$WORK_PATH/void-mklive" -type f -name "*.tar.xz" -exec stat -c '%Y %n' {} + | sort -nr | awk 'NR==1 {print $2}')
           ISO_BASENAME=$(basename "$OUTPUT_ISO_PATH_NAME")
-          XZ_BASENAME=$(basename "$OUTPUT_XZ_PATH_NAME")
 
           echo "OUTPUT_ISO_PATH_NAME=$OUTPUT_ISO_PATH_NAME" >> "$GITHUB_ENV"  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
-          echo "OUTPUT_XZ_PATH_NAME=$OUTPUT_XZ_PATH_NAME" >> "$GITHUB_ENV"    # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
           echo "ISO_BASENAME=$ISO_BASENAME" >> "$GITHUB_ENV"                  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
-          echo "XZ_BASENAME=$XZ_BASENAME" >> "$GITHUB_ENV"                    # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
 
           if [[ -n "$OUTPUT_ISO_PATH_NAME" ]]; then
             mv -fv "$OUTPUT_ISO_PATH_NAME" "$WORK_PATH/" || echo "ERRO: Falha ao mover arquivo ISO $OUTPUT_ISO_PATH_NAME"
             # Set environment variables
             echo "ISO_FULLNAME=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_ENV"
-          fi
-          if [[ -n "$OUTPUT_XZ_PATH_NAME"  ]]; then
-            mv -fv "$OUTPUT_XZ_PATH_NAME" "$WORK_PATH/"  || echo "ERRO: Falha ao mover arquivo XZ $OUTPUT_XZ_PATH_NAME"
-            # Set environment variables
-            echo "XZ_FULLNAME=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_ENV"
           fi
         }
 
@@ -202,7 +190,7 @@ runs:
       id: set-tag-name
       shell: bash
       run: |
-        FILENAME="$XZ_BASENAME"
+        FILENAME="$ISO_BASENAME"
         TAG_NAME=$(echo "$FILENAME" | grep -oP '\d{8}')-$(date +%H%M)
         echo "XZ_TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
@@ -211,4 +199,3 @@ runs:
       run: |
         # Set outputs
         echo "iso_path=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_OUTPUT"
-        echo "xz_path=$WORK_PATH/$XZ_BASENAME" >> "$GITHUB_OUTPUT"
