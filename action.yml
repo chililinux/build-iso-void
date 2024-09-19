@@ -172,6 +172,7 @@ runs:
             live-gnome)        ./mkiso -G ;;
             live-kde)          ./mkiso -P ;;
             live-all)          ./mkiso -A ;;
+            *)                 ./mkiso    ;;
           esac
           popd
         }
