@@ -163,16 +163,16 @@ runs:
           #[[ ${{ inputs.tmate }} == 'true' ]] && ./mkiso || ./mkiso > /dev/null
 
           case $EDITION in
-            live-base-custom)  ./mkiso    ;;
-            live-xfce-base)    ./mkiso -X ;;
-            live-xfce-custom)  ./mkiso -Y ;;
-            live-awesome)      ./mkiso -W ;;
-            live-enlightnment) ./mkiso -E ;;
-            live-fluxbox)      ./mkiso -F ;;
-            live-gnome)        ./mkiso -G ;;
-            live-kde)          ./mkiso -P ;;
-            live-all)          ./mkiso -A ;;
-            *)                 ./mkiso    ;;
+            live-base-custom)  sudo ./mkiso    ;;
+            live-xfce-base)    sudo ./mkiso -X ;;
+            live-xfce-custom)  sudo ./mkiso -Y ;;
+            live-awesome)      sudo ./mkiso -W ;;
+            live-enlightnment) sudo ./mkiso -E ;;
+            live-fluxbox)      sudo ./mkiso -F ;;
+            live-gnome)        sudo ./mkiso -G ;;
+            live-kde)          sudo ./mkiso -P ;;
+            live-all)          sudo ./mkiso -A ;;
+            *)                 sudo ./mkiso    ;;
           esac
           popd
         }
