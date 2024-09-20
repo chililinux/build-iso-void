@@ -269,4 +269,4 @@ jobs:
               -i /root/.ssh/id_rsa \
               ${{ env.ISO_FULLNAME }} \
               ${{ env.ISO_FULLNAME }}.md5 \
-              ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/current
+              ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/iso
