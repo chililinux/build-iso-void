@@ -82,6 +82,14 @@ jobs:
 
       - name: Install Required Libraries
         run: |
+          {
+          echo 'repository=https://repo-fastly.voidlinux.org/current'
+          echo 'repository=https://repo-fastly.voidlinux.org/current/nonfree'
+          echo 'repository=https://repo-fastly.voidlinux.org/current/multilib'
+          echo 'repository=https://repo-fastly.voidlinux.org/current/multilib/nonfree'
+          echo 'repository=https://chililinux.com/void/current'
+          } > /etc/xbps.d/00-repository-main.conf
+
           xbps-install -Syu -f \
             xbps \
             xtools \
