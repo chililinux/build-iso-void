@@ -236,6 +236,8 @@ jobs:
           release_name: Release ${{ env.ISO_TAG_NAME }}
           body: |
             - **Data e Hora        :** ${{ needs.get-time.outputs.time }}
+            - **Arquivo ISO        :** ${{ env.ISO_BASENAME }}
+            - **Arquivo MD5        :** ${{ env.ISO_FULLNAME }}.md5
             - **Nome do Repositório:** ${{ env.REPO_NAME }}
           draft: false
           prerelease: false
