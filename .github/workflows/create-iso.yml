@@ -28,7 +28,7 @@ on:
           - live-gnome
           - live-kde
           - live-all
-        default: "live-base-custom"
+        default: "live-xfce-custom"
       tmate:
         type: boolean
         description: "Enable debugging with tmate"
@@ -170,7 +170,7 @@ jobs:
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}"
-          echo "Calculating MD5 hash for: ${{ env.ISO_FULLNAME }} file..."
+          echo "Calculating MD5 hash for: ${{ env.ISO_BASENAME }} file..."
           echo "ISO_BASENAME is: '${{ env.ISO_BASENAME }}'"
           if [[ -f "${{ env.ISO_BASENAME }}" ]]; then
             md5sum "${{ env.ISO_BASENAME }}" > "${{ env.ISO_BASENAME }}.md5"
@@ -268,4 +268,5 @@ jobs:
               -o StrictHostKeyChecking=no \
               -i /root/.ssh/id_rsa \
               ${{ env.ISO_FULLNAME }} \
+              ${{ env.ISO_FULLNAME }}.md5 \
               ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/current

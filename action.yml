@@ -182,7 +182,7 @@ runs:
           ISO_BASENAME=$(basename "$OUTPUT_ISO_PATH_NAME")
 
           echo "OUTPUT_ISO_PATH_NAME=$OUTPUT_ISO_PATH_NAME" >> "$GITHUB_ENV"  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
-          echo "ISO_BASENAME=$ISO_BASENAME" >> "$GITHUB_ENV"                  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
+          echo "ISO_BASENAME=$ISO_BASENAME"                 >> "$GITHUB_ENV"  # Exporta OUTPUT_ISO_PATH_NAME para outras etapas
 
           if [[ -n "$OUTPUT_ISO_PATH_NAME" ]]; then
             mv -fv "$OUTPUT_ISO_PATH_NAME" "$WORK_PATH/" || echo "ERRO: Falha ao mover arquivo ISO $OUTPUT_ISO_PATH_NAME"
@@ -197,7 +197,7 @@ runs:
         }
         main
 
-    - name: Extrair data do nome do arquivo .tar.xz e definir tag_name
+    - name: Extrair data do nome do arquivo .iso e definir tag_name
       id: set-tag-name
       shell: bash
       run: |
