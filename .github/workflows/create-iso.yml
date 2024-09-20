@@ -90,7 +90,7 @@ jobs:
           echo 'repository=https://chililinux.com/void/current'
           } > /etc/xbps.d/00-repository-main.conf
 
-          xbps-install -Syu -f \
+          xbps-install -Syu --yes -f \
             xbps \
             xtools \
             bash \
