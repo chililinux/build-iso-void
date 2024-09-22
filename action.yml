@@ -3,6 +3,7 @@ description: 'Action to build a custom ISO for VoidLinux'
 
 inputs:
   teste_input:
+    type: boolean
     description: "Marque para testes"
     required: false
     default: false
@@ -25,6 +26,7 @@ inputs:
       - live-kde
       - live-all
   tmate:
+    type: boolean
     description: "Enable debugging with tmate"
     required: false
     default: false
@@ -84,7 +86,7 @@ runs:
         echo "BASHRC_PATH=$BASHRC_PATH"   >> "$GITHUB_ENV"  # Exporta WORK_PATH para outras etapas
 
     - name: Checkout chili-void-mklive
-      if: ${{ inputs.teste_input != 'true' }}
+      if: ${{ inputs.teste_input != true }}
       shell: bash
       run: |
         # Cloning chili-void-mklive repository
@@ -104,7 +106,7 @@ runs:
         rm -rf /__t/* || true
 
     - name: Checkout chili-void-bashrc
-      if: ${{ inputs.teste_input != 'true' }}
+      if: ${{ inputs.teste_input != true }}
       shell: bash
       run: |
         # Cloning chili-void-bashrc repository
@@ -155,13 +157,13 @@ runs:
 
     - name: Setup TMATE Session
       uses: mxschmitt/action-tmate@v3
-      if: ${{ inputs.tmate }} == 'true'
+      if: ${{ inputs.tmate }} == true }}
       with:
         install-dependencies: false
         detached: true
 
     - name: Build ISO Image
-      if: ${{ inputs.teste_input != 'true' }}
+      if: ${{ inputs.teste_input != true }}
       shell: bash
       env:
         DEBUG: ${{ inputs.tmate || github.event.client_payload.tmate || 'false' }}
@@ -216,7 +218,7 @@ runs:
           #echo "Arquivo 2 de teste" > arquivo2.txt
           #tar -cvJf void-live-base-custom-x86_64-6.6.51_1-20240920-1810.tar.xz arquivo1.txt arquivo2.txt
           #efetivo
-          #[[ ${{ inputs.tmate }} == 'true' ]] && ./mkiso || ./mkiso > /dev/null
+          #[[ ${{ inputs.tmate }} == true ]] && ./mkiso || ./mkiso > /dev/null
           eval "$BUILD_COMMAND"
           popd
         }
@@ -242,7 +244,7 @@ runs:
         main
 
     - name: Extrair data do nome do arquivo .iso e definir tag_name
-      if: ${{ inputs.teste_input != 'true' }}
+      if: ${{ inputs.teste_input != true }}
       id: set-tag-name
       shell: bash
       run: |
@@ -251,7 +253,7 @@ runs:
         echo "ISO_TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
     - name: Set ISO path
-      if: ${{ inputs.teste_input != 'true' }}
+      if: ${{ inputs.teste_input != true }}
       shell: bash
       run: |
         # Set outputs
