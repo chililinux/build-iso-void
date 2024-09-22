@@ -99,9 +99,13 @@ runs:
         # ativando 'git config --global --add safe.directory'
         git config --global --add safe.directory "$BASHRC_PATH" || true
 
-    - name: Ajustar ambiente do builduser
+    - name: Ajustar ambiente
       shell: bash
       run: |
+        # Ajustar ambiente
+        ln -sfv  "$WORK_PATH" /work_path         || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/. /etc/ || true
+
         # Ajustar ambiente do root
         pushd /root                         || true
         cp -Rpa "$BASHRC_PATH"/etc/skel/. . || true
