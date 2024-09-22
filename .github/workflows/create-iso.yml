@@ -177,7 +177,7 @@ jobs:
       - name: Calculate MD5 Hash of files
         shell: bash
         run: |
-          pushd "${{ env.WORK_PATH }}"
+          pushd "${{ env.WORK_PATH }}" || true
           echo "Calculating MD5 hash for: ${{ env.ISO_BASENAME }} file..."
           echo "ISO_BASENAME is: '${{ env.ISO_BASENAME }}'"
           if [[ -f "${{ env.ISO_BASENAME }}" ]]; then
@@ -188,12 +188,13 @@ jobs:
             echo "ERRO: ${{ env.ISO_BASENAME }} file not found at ${{ env.WORK_PATH }}"
             exit 1
           fi
-          popd
+          popd || true
 
       - name: Prepare ISO file for release
         id: prepare-iso
         shell: bash
         run: |
+          pushd "${{ env.WORK_PATH }}" || true
           ls -lha
           release=${{ env.ISO_BASENAME }} # Apenas obtém o nome do arquivo com extensão
           release="${release%.iso}"
@@ -213,6 +214,7 @@ jobs:
             echo "ERRO: No preparo do arquivo ISO para release"
             exit 1
           fi
+          popd || true
 
       - name: Debug environment variables and List Files
         run: |
@@ -220,6 +222,9 @@ jobs:
           echo "ISO_FULLNAME=${{ env.ISO_FULLNAME }}"
           echo "ISO Path from output=${{ steps.define-paths.outputs.iso_path }}"
           ls -lah "${{ env.WORK_PATH }}"
+
+      - name: Verificar arquivo .iso
+        run: ls -lah --color=auto ${{ env.ISO_FULLNAME }} # Verifique se o arquivo .iso foi gerado corretamente
 
       - name: Upload FILES as artifact
         uses: actions/upload-artifact@v3
@@ -250,20 +255,6 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Fazer upload do arquivo .iso no release
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
-          asset_path: ${{ env.ISO_FULLNAME }} # Caminho do arquivo .iso
-          asset_name: ${{ env.REPO_NAME }}.zip
-          asset_content_type: application/iso # Tipo correto para arquivos .iso
-
-      - name: Verificar arquivo .iso
-        run: ls -lah --color=auto ${{ env.ISO_FULLNAME }} # Verifique se o arquivo .iso foi gerado corretamente
-
       - name: Configurar chave SSH e Adicionar chave do host remoto ao known_hosts
         run: |
           mkdir -p /root/.ssh
@@ -280,3 +271,15 @@ jobs:
               ${{ env.ISO_FULLNAME }} \
               ${{ env.ISO_FULLNAME }}.md5 \
               ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/iso
+
+      - name: Fazer upload do arquivo .iso no release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
+          asset_path: ${{ env.ISO_FULLNAME }} # Caminho do arquivo .iso
+          asset_name: ${{ env.REPO_NAME }}.zip
+          asset_content_type: application/iso # Tipo correto para arquivos .iso
+
