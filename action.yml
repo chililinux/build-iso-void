@@ -43,9 +43,9 @@ runs:
   using: "composite"
   steps:
     - name: Debug teste_input
+      shell: bash
       run: |
         echo "teste_input: '${{ inputs.teste_input }}'"
-        exit 1
 
     - name: Display the current user in CONTAINER
       shell: bash
