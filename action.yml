@@ -14,17 +14,16 @@ inputs:
   edition:
     description: "Edition of the ISO"
     required: true
-    default: "live-xfce-custom"
+    default: "xfce"
     options:
-      - live-base-custom
-      - live-xfce-base
-      - live-xfce-custom
-      - live-awesome
-      - live-enlightnment
-      - live-fluxbox
-      - live-gnome
-      - live-kde
-      - live-all
+      - base
+      - xfce
+      - awesome
+      - enlightnment
+      - fluxbox
+      - gnome
+      - kde
+      - all
   tmate:
     type: boolean
     description: "Enable debugging with tmate"
@@ -174,7 +173,7 @@ runs:
         DEBUG: ${{ inputs.tmate != false && inputs.tmate || github.event.client_payload.tmate || false }}
         TESTE: ${{ inputs.teste_input != false && inputs.teste_input || github.event.client_payload.teste_input || false }}
         VOL_ID: ${{ inputs.vol_id || github.event.client_payload.vol_id || 'VOID_LIVE' }}
-        EDITION: ${{ inputs.edition || github.event.client_payload.edition || 'live-xfce-custom' }}
+        EDITION: ${{ inputs.edition || github.event.client_payload.edition || 'xfce' }}
         RELEASE_TAG: ${{ inputs.release_tag }}
       run: |
         # BUILD ISO Image
@@ -189,16 +188,15 @@ runs:
           local BUILD_COMMAND
 
           case "$EDITION" in
-            live-base-custom)  BUILD_COMMAND='sudo ./mkiso'    ;;
-            live-xfce-base)    BUILD_COMMAND='sudo ./mkiso -X' ;;
-            live-xfce-custom)  BUILD_COMMAND='sudo ./mkiso -Y' ;;
-            live-awesome)      BUILD_COMMAND='sudo ./mkiso -W' ;;
-            live-enlightnment) BUILD_COMMAND='sudo ./mkiso -E' ;;
-            live-fluxbox)      BUILD_COMMAND='sudo ./mkiso -F' ;;
-            live-gnome)        BUILD_COMMAND='sudo ./mkiso -G' ;;
-            live-kde)          BUILD_COMMAND='sudo ./mkiso -P' ;;
-            live-all)          BUILD_COMMAND='sudo ./mkiso -A' ;;
-            *)                 BUILD_COMMAND='sudo ./mkiso'    ;;
+            base)         BUILD_COMMAND='sudo ./mkiso'    ;;
+            xfce)         BUILD_COMMAND='sudo ./mkiso -Y' ;;
+            awesome)      BUILD_COMMAND='sudo ./mkiso -W' ;;
+            enlightnment) BUILD_COMMAND='sudo ./mkiso -E' ;;
+            fluxbox)      BUILD_COMMAND='sudo ./mkiso -F' ;;
+            gnome)        BUILD_COMMAND='sudo ./mkiso -G' ;;
+            kde)          BUILD_COMMAND='sudo ./mkiso -P' ;;
+            all)          BUILD_COMMAND='sudo ./mkiso -A' ;;
+            *)            BUILD_COMMAND='sudo ./mkiso'    ;;
           esac
 
           echo "########################## RESUMO ######################################################"

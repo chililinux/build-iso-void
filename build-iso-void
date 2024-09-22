@@ -91,16 +91,46 @@ gettokengithub_by_key() {
 }
 
 main() {
+	local edition=$1
+	local vol_id=$2
+	local debug_tmate=$3
+	local teste_only=$4
 	local TOKEN_RELEASE="$(gettokengithub_by_key)"
 	local data
+
+	if [[ ! "$edition" =~ ^(base|xfce|awesome|enlightnment|gnome|kde|all)$ ]]; then
+		echo "${red}Error: Unknown edition: ${yellow}${edition}${reset}
+- valid are:
+${yellow}base ${red}or
+${yellow}xfce ${red}or
+${yellow}awesome ${red}or
+${yellow}enlightnment ${red}or
+${yellow}fluxbox ${red}or
+${yellow}gnome ${red}or
+${yellow}kde ${red}or
+${yellow}all${reset}"
+		return 0
+	fi
+
+	[[ -z "$vol_id" ]] && vol_id='VOID_LIVE'
+	[[ -z "$debug_tmate" ]] && debug_tmate='false'
+	[[ -z "$teste_only" ]] && teste_only='false'
+	if [[ ! "$debug_tmate" =~ ^(true|false)$ ]]; then
+		echo "${red}Error: Unknown debug tmate: ${yellow}${debug_tmate}${reset} - valid: ${yellow}'true' ${red}or ${yellow}'false' ${reset}"
+		return 1
+	fi
+	if [[ ! "$teste_only" =~ ^(true|false)$ ]]; then
+		echo "${red}Error: Unknown teste_input: ${yellow}${teste_input}${reset} - valid: ${yellow}'true' ${red}or ${yellow}'false' ${reset}"
+		return 1
+	fi
 
 	data='{
   "ref": "main",
   "inputs": {
-    "teste_input": "false",
-    "vol_id": "VOID_LIVE",
-    "edition": "live-xfce-custom",
-    "tmate": "false"
+    "teste_input": "'$teste_only'",
+    "vol_id": "'$vol_id'",
+    "edition": "'$edition'",
+    "tmate": "'$debug_tmate'"
   }
 }'
 
@@ -115,4 +145,12 @@ main() {
 	echo "Response Code: $response"
 }
 
-main
+if test $# -lt 1; then
+	echo "uso: ${cyan}${APP} <edition> <vol_id> [<tmate>] [<teste_input>]${reset}"
+	echo "     ${cyan}${APP} live-xfce-custom VOID_LIVE true false ${reset}"
+	echo "     ${cyan}${APP} live-xfce-custom VOID_LIVE ${reset}"
+	echo "     ${cyan}${APP} live-base-custom ${reset}"
+	exit 1
+fi
+
+main "$@"
