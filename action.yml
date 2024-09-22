@@ -105,12 +105,18 @@ runs:
         # Ajustar ambiente do root
         pushd /root                          || true
         cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
+        for i in dot*; do
+          mv -fv "$i" "${i#*.}"
+        done
         popd || true
 
         # Ajustar ambiente do builduser
         sudo -u builduser bash << EOF
         cd /home/builduser/                  || true
         cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
+        for i in dot*; do
+          mv -fv "$i" "${i#*.}"
+        done
         EOF
 
     - name: Setup TMATE Session
