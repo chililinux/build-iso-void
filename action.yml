@@ -103,19 +103,19 @@ runs:
       shell: bash
       run: |
         # Ajustar ambiente do root
-        pushd /root                          || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
-        for i in dot*; do
-          mv -fv "$i" ".${i#dot.}" || true
+        pushd /root                         || true
+        cp -Rpa "$BASHRC_PATH"/etc/skel/. . || true
+        for i in dot.*; do
+          mv "$i" ".${i#dot.}" || true
         done
         popd || true
 
         # Ajustar ambiente do builduser
         sudo -u builduser bash << EOF
-        pushd /home/builduser/               || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
-        for i in dot*; do
-          mv -fv "$i" ".${i#dot.}" || true
+        pushd /home/builduser/              || true
+        cp -Rpa "$BASHRC_PATH"/etc/skel/. . || true
+        for i in dot.*.; do
+          mv "$i" ".${i#dot.}" || true
         done
         popd || true
         EOF
