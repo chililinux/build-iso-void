@@ -59,28 +59,10 @@ runs:
         #PROFILE_PATH='/__w/build-iso-void/build-iso-void/chili-void-mklive'
         WORK_PATH="/__w/${{env.REPO_NAME}}/${{env.REPO_NAME}}"
         PROFILE_PATH="/__w/${{env.REPO_NAME}}/${{env.REPO_NAME}}/chili-void-mklive"
+        BASHRC_PATH="/__w/${{env.REPO_NAME}}/${{env.REPO_NAME}}/chili-void-bashrc"
         echo "WORK_PATH=$WORK_PATH"       >> "$GITHUB_ENV"  # Exporta WORK_PATH para outras etapas
         echo "PROFILE_PATH=$PROFILE_PATH" >> "$GITHUB_ENV"  # Exporta WORK_PATH para outras etapas
-
-    - name: Ajustar ambiente do builduser
-      shell: bash
-      run: |
-        # Ajustar ambiente do root
-        pushd /root                      || true
-        cp -Rpa /etc/skel/.bash* .       || true
-        cp -Rpa /etc/skel/.ps* .         || true
-        cp -Rpa /etc/skel/.dircolors* .  || true
-        cp -Rpa /etc/skel/.git-prompt* . || true
-        popd || true
-
-        # Ajustar ambiente do builduser
-        sudo -u builduser bash << EOF
-        cd $HOME                         || true
-        cp -Rpa /etc/skel/.bash* .       || true
-        cp -Rpa /etc/skel/.ps* .         || true
-        cp -Rpa /etc/skel/.dircolors* .  || true
-        cp -Rpa /etc/skel/.git-prompt* . || true
-        EOF
+        echo "BASHRC_PATH=$BASHRC_PATH"   >> "$GITHUB_ENV"  # Exporta WORK_PATH para outras etapas
 
     - name: Checkout chili-void-mklive
       shell: bash
@@ -100,6 +82,42 @@ runs:
 
         # clean '/__t/' directory
         rm -rf /__t/* || true
+
+    - name: Checkout chili-void-bashrc
+      shell: bash
+      run: |
+        # Cloning chili-void-bashrc repository
+        #REPO="${{ inputs.iso_profiles_repo }}"
+        REPO="https://github.com/chililinux/chili-void-bashrc"
+        echo "Repository: $REPO"
+
+        rm -rf "$BASHRC_PATH" || true
+        if ! git clone --depth 1 "$REPO" "$BASHRC_PATH"; then
+          echo "Falha ao clonar o repositorio $REPO em $BASHRC_PATH"
+          exit 1
+        fi
+        # ativando 'git config --global --add safe.directory'
+        git config --global --add safe.directory "$BASHRC_PATH" || true
+
+    - name: Ajustar ambiente do builduser
+      shell: bash
+      run: |
+        # Ajustar ambiente do root
+        pushd /root                       || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/.bash* .       || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/.ps* .         || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/.dircolors* .  || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/.git-prompt* . || true
+        popd || true
+
+        # Ajustar ambiente do builduser
+        sudo -u builduser bash << EOF
+        cd /home/builduser/               || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/.bash* .       || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/.ps* .         || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/.dircolors* .  || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/.git-prompt* . || true
+        EOF
 
     - name: Setup TMATE Session
       uses: mxschmitt/action-tmate@v3
