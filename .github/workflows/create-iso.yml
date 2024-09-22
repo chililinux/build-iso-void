@@ -81,11 +81,6 @@ jobs:
         - /mnt/lfs:/mnt/lfs
 
     steps:
-      - name: Debug teste_input
-        run: |
-          echo "teste_input: '${{ inputs.teste_input }}'"
-          exit 1
-
       - name: Set up volume directory on HOST
         run: |
           mkdir -p /mnt/lfs
@@ -163,6 +158,7 @@ jobs:
           fetch-depth: 1
 
       - name: Build ISO
+        if: ${{ inputs.teste_input != true }}
         uses: ./
         id: build
         with:
