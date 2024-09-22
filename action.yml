@@ -195,6 +195,7 @@ runs:
 
           echo "########################## RESUMO ######################################################"
           echo "DEBUG (tmate)            : $DEBUG"
+          echo "TESTE                    : ${{ inputs.teste_input }}"
           echo "DISTRONAME               : $DISTRONAME"
           echo "EDITION                  : $EDITION"
           echo "RELEASE_TAG              : $RELEASE_TAG"
