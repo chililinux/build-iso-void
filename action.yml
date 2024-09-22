@@ -7,8 +7,8 @@ inputs:
     description: "Enable only test"
     required: false
     default: false
-  name:
-    description: "Name for the ISO"
+  vol_id:
+    description: "Nome do VOLUME da ISO"
     required: true
     default: "VOID_LIVE"
   edition:
@@ -173,7 +173,7 @@ runs:
       env:
         DEBUG: ${{ inputs.tmate != false && inputs.tmate || github.event.client_payload.tmate || false }}
         TESTE: ${{ inputs.teste_input != false && inputs.teste_input || github.event.client_payload.teste_input || false }}
-        DISTRONAME: ${{ inputs.name || github.event.client_payload.name || 'VOID_LIVE' }}
+        VOL_ID: ${{ inputs.vol_id || github.event.client_payload.vol_id || 'VOID_LIVE' }}
         EDITION: ${{ inputs.edition || github.event.client_payload.edition || 'live-xfce-custom' }}
         RELEASE_TAG: ${{ inputs.release_tag }}
       run: |
@@ -204,7 +204,7 @@ runs:
           echo "########################## RESUMO ######################################################"
           echo "DEBUG (tmate)            : $DEBUG"
           echo "TESTE                    : ${{ inputs.teste_input }}"
-          echo "DISTRONAME               : $DISTRONAME"
+          echo "VOL_ID                   : $VOL_ID"
           echo "EDITION                  : $EDITION"
           echo "RELEASE_TAG              : $RELEASE_TAG"
           echo "########################################################################################"
