@@ -106,7 +106,7 @@ runs:
         pushd /root                          || true
         cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
         for i in dot*; do
-          mv -fv "$i" "${i#*.}"
+          mv -fv "$i" ".${i#dot.}"
         done
         popd || true
 
@@ -115,7 +115,7 @@ runs:
         cd /home/builduser/                  || true
         cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
         for i in dot*; do
-          mv -fv "$i" "${i#*.}"
+          mv -fv "$i" ".${i#dot.}"
         done
         EOF
 
