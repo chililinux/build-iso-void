@@ -4,7 +4,7 @@ description: "Action to build a custom ISO for VoidLinux"
 inputs:
   teste_input:
     type: boolean
-    description: "Marque para testes"
+    description: "Enable only test"
     required: false
     default: false
   name:
@@ -171,7 +171,8 @@ runs:
       if: ${{ inputs.teste_input != true }}
       shell: bash
       env:
-        DEBUG: ${{ inputs.tmate || github.event.client_payload.tmate || 'false' }}
+        DEBUG: ${{ inputs.tmate != false && inputs.tmate || github.event.client_payload.tmate || false }}
+        TESTE: ${{ inputs.teste_input != false && inputs.teste_input || github.event.client_payload.teste_input || false }}
         DISTRONAME: ${{ inputs.name || github.event.client_payload.name || 'VOID_LIVE' }}
         EDITION: ${{ inputs.edition || github.event.client_payload.edition || 'live-xfce-custom' }}
         RELEASE_TAG: ${{ inputs.release_tag }}

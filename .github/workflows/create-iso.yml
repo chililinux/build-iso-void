@@ -12,7 +12,7 @@ on:
     inputs:
       teste_input:
         type: boolean
-        description: "Marque para testes"
+        description: "Enable only test"
         required: false
         default: false
       name:
