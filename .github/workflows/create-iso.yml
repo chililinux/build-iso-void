@@ -208,6 +208,7 @@ jobs:
               ${{ env.ISO_FULLNAME }}.md5; then
             echo "ISO_FULLNAME=${{ env.WORK_PATH }}/${release}.iso" >> "$GITHUB_ENV"
             echo "ISO_BASENAME=${release}.iso"                      >> "$GITHUB_ENV"
+            echo "ZIP_BASENAME=${release}.zip"                      >> "$GITHUB_ENV"
             echo "${ISO_FULLNAME} prepared for release"
             ls -lha
           else
@@ -272,14 +273,13 @@ jobs:
               ${{ env.ISO_FULLNAME }}.md5 \
               ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/iso
 
-      - name: Fazer upload do arquivo .iso no release
+      - name: Fazer upload do arquivo .zip no release
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # URL gerada no passo da criação da release
-          asset_path: ${{ env.ISO_FULLNAME }} # Caminho do arquivo .iso
-          asset_name: ${{ env.REPO_NAME }}.zip
-          asset_content_type: application/iso # Tipo correto para arquivos .iso
-
+          asset_path: ${{ env.ZIP_BASENAME }} # Caminho do arquivo .iso
+          asset_name: ${{ env.ZIP_BASENAME }}.zip
+          asset_content_type: application/zip # Tipo correto para arquivos .z
