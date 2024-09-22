@@ -1,5 +1,5 @@
-name: 'VoidLinux ISO Builder'
-description: 'Action to build a custom ISO for VoidLinux'
+name: "VoidLinux ISO Builder"
+description: "Action to build a custom ISO for VoidLinux"
 
 inputs:
   teste_input:
@@ -42,10 +42,10 @@ outputs:
 runs:
   using: "composite"
   steps:
-
     - name: Debug teste_input
-      run: echo "teste_input: '${{ inputs.teste_input }}'"
-      exit 1
+      run: |
+        echo "teste_input: '${{ inputs.teste_input }}'"
+        exit 1
 
     - name: Display the current user in CONTAINER
       shell: bash
