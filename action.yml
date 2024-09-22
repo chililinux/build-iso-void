@@ -142,45 +142,47 @@ runs:
     - name: Build ISO Image
       shell: bash
       env:
-        DEBUG: ${{ inputs.tmate }}
-        DISTRONAME: ${{ inputs.name }}
+        DEBUG: ${{ inputs.tmate || github.event.client_payload.tmate || 'false' }}
+        DISTRONAME: ${{ inputs.name || github.event.client_payload.name || 'VOID_LIVE' }}
         EDITION: ${{ inputs.edition || github.event.client_payload.edition || 'live-xfce-custom' }}
-        MANJAROBRANCH: ${{ inputs.manjaro_branch }}
-        COMMUNITYBRANCH: ${{ inputs.community_branch }}
-        BIGBRANCH: ${{ inputs.biglinux_branch }}
-        SCOPE: ${{ inputs.scope }}
-        KERNEL: ${{ inputs.kernel }}
-        OFFICE: ${{ inputs.office-chooser }}
         RELEASE_TAG: ${{ inputs.release_tag }}
       run: |
         # BUILD ISO Image
+
         # Check if directory exists before proceeding
         if [[ ! -d "$PROFILE_PATH" ]]; then
-          echo "ERRO(L427): Diretorio $PROFILE_PATH não encontrado!"
+          echo "ERRO(L427): Diretório $PROFILE_PATH não encontrado!"
           exit 1
         fi
 
-        # listando diretório iso-profiles no diretório atual
-        ls -la "$WORK_PATH"
-
         build_iso() {
-          echo "########################## RESUMO #################################"
-          echo "BUILD COMMAND            : ./mkiso"
-          echo "PROFILE_PATH             : $PROFILE_PATH"
+          local BUILD_COMMAND
+
+          case "$EDITION" in
+            live-base-custom)  BUILD_COMMAND='sudo ./mkiso'    ;;
+            live-xfce-base)    BUILD_COMMAND='sudo ./mkiso -X' ;;
+            live-xfce-custom)  BUILD_COMMAND='sudo ./mkiso -Y' ;;
+            live-awesome)      BUILD_COMMAND='sudo ./mkiso -W' ;;
+            live-enlightnment) BUILD_COMMAND='sudo ./mkiso -E' ;;
+            live-fluxbox)      BUILD_COMMAND='sudo ./mkiso -F' ;;
+            live-gnome)        BUILD_COMMAND='sudo ./mkiso -G' ;;
+            live-kde)          BUILD_COMMAND='sudo ./mkiso -P' ;;
+            live-all)          BUILD_COMMAND='sudo ./mkiso -A' ;;
+            *)                 BUILD_COMMAND='sudo ./mkiso'    ;;
+          esac
+
+          echo "########################## RESUMO ######################################################"
+          echo "DEBUG (tmate)            : $DEBUG"
+          echo "DISTRONAME               : $DISTRONAME"
           echo "EDITION                  : $EDITION"
-          echo "MANJAROBRANCH            : $MANJAROBRANCH"
-          echo "COMMUNITYBRANCH          : $COMMUNITYBRANCH"
-          echo "BIGLINUXBRANCH           : $BIGBRANCH"
-          echo "KERNEL_VER               : ${KERNEL_VER}"
-          echo "KERNEL_NAME              : ${KERNEL_NAME}"
-          echo "SCOPE                    : $SCOPE"
-          echo "OFFICE                   : $OFFICE"
-          echo "###################################################################"
+          echo "RELEASE_TAG              : $RELEASE_TAG"
+          echo "########################################################################################"
+          echo "BUILD COMMAND            : $BUILD_COMMAND"
           echo "WORK_PATH                : $WORK_PATH"
           echo "PROFILE_PATH             : $PROFILE_PATH"
           echo "ISO profiles path        : $PROFILE_PATH/$EDITION"
           echo "PATH_MANJARO_ISO_PROFILES: $PATH_MANJARO_ISO_PROFILES"
-          echo "###################################################################"
+          echo "########################################################################################"
           #echo "ROOT_RUN_DIR             : $(< /root/.config/manjaro-tools/iso-profiles.conf)"
           #echo "BUILDUSER_RUN_DIR        : $(< /home/builduser/.config/manjaro-tools/iso-profiles.conf)"
           echo "###################################################################"
@@ -189,22 +191,10 @@ runs:
           #teste
           #echo "Arquivo 1 de teste" > arquivo1.txt
           #echo "Arquivo 2 de teste" > arquivo2.txt
-          #tar -cvJf void-x86_64-base-custom-20240918.tar.xz arquivo1.txt arquivo2.txt
+          #tar -cvJf void-live-base-custom-x86_64-6.6.51_1-20240920-1810.tar.xz arquivo1.txt arquivo2.txt
           #efetivo
           #[[ ${{ inputs.tmate }} == 'true' ]] && ./mkiso || ./mkiso > /dev/null
-
-          case $EDITION in
-            live-base-custom)  sudo ./mkiso    ;;
-            live-xfce-base)    sudo ./mkiso -X ;;
-            live-xfce-custom)  sudo ./mkiso -Y ;;
-            live-awesome)      sudo ./mkiso -W ;;
-            live-enlightnment) sudo ./mkiso -E ;;
-            live-fluxbox)      sudo ./mkiso -F ;;
-            live-gnome)        sudo ./mkiso -G ;;
-            live-kde)          sudo ./mkiso -P ;;
-            live-all)          sudo ./mkiso -A ;;
-            *)                 sudo ./mkiso    ;;
-          esac
+          eval "$BUILD_COMMAND"
           popd
         }
 
