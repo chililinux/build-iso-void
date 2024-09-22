@@ -2,9 +2,9 @@ name: Build ISO VoidLinux
 
 # Gatilhos para o workflow
 on:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   repository_dispatch:
     types:
       - "ISO-*"
