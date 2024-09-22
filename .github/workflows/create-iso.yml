@@ -80,7 +80,7 @@ jobs:
         run: |
           mkdir -p /mnt/lfs
 
-      - name: Install Required Libraries
+      - name: Install Required Packages and Libraries
         run: |
           #{
           #echo 'repository=https://repo-fastly.voidlinux.org/current'
