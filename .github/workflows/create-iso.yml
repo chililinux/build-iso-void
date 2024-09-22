@@ -180,6 +180,7 @@ jobs:
           github_token: ${{ secrets.ORGANIZATION_TOKEN }}
 
       - name: Calculate MD5 Hash of files
+        if: ${{ inputs.teste_input != 'true' }}
         shell: bash
         run: |
           pushd "${{ env.WORK_PATH }}" || true
@@ -196,6 +197,7 @@ jobs:
           popd || true
 
       - name: Prepare ISO file for release
+        if: ${{ inputs.teste_input != 'true' }}
         id: prepare-iso
         shell: bash
         run: |
@@ -223,6 +225,7 @@ jobs:
           popd || true
 
       - name: Debug environment variables and List Files
+        if: ${{ inputs.teste_input != 'true' }}
         run: |
           echo "ISO_BASENAME=${{ env.ISO_BASENAME }}"
           echo "ISO_FULLNAME=${{ env.ISO_FULLNAME }}"
@@ -230,9 +233,11 @@ jobs:
           ls -lah "${{ env.WORK_PATH }}"
 
       - name: Verificar arquivo .iso
+        if: ${{ inputs.teste_input != 'true' }}
         run: ls -lah --color=auto ${{ env.ISO_FULLNAME }} # Verifique se o arquivo .iso foi gerado corretamente
 
       - name: Upload FILES as artifact
+        if: ${{ inputs.teste_input != 'true' }}
         uses: actions/upload-artifact@v3
         env:
           GITHUB_TOKEN: ${{ secrets.ORGANIZATION_TOKEN }}
@@ -246,6 +251,7 @@ jobs:
           include-hidden-files: false
 
       - name: Criar release iso
+        if: ${{ inputs.teste_input != 'true' }}
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -262,6 +268,7 @@ jobs:
           prerelease: false
 
       - name: Configurar chave SSH e Adicionar chave do host remoto ao known_hosts
+        if: ${{ inputs.teste_input != 'true' }}
         run: |
           mkdir -p /root/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > /root/.ssh/id_rsa
@@ -269,6 +276,7 @@ jobs:
           ssh-keyscan -p 65002 -H ${{ secrets.SERVER_HOST }} >> /root/.ssh/known_hosts
 
       - name: Enviar arquivo ISO para o servidor via SCP com porta customizada
+        if: ${{ inputs.teste_input != 'true' }}
         run: |
           scp -P 65002 \
               -v \
@@ -279,6 +287,7 @@ jobs:
               ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/${{ secrets.SERVER_USER }}/void/iso
 
       - name: Fazer upload do arquivo .zip no release
+        if: ${{ inputs.teste_input != 'true' }}
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
