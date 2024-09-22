@@ -5,11 +5,17 @@ on:
 #  push:
 #    branches:
 #      - main
-  repository_dispatch:
+
+  repository_dispatch:  # aguarda um evento externo para iniciar o workflow (útil para automações externas que acionam o GitHub Actions).
     types:
       - "ISO-*"
-  workflow_dispatch:
+
+  workflow_dispatch:    # Permite a execução manual do workflow via interface do GitHub, e você definiu inputs como name, edition, e tmate
     inputs:
+      teste_input:
+        description: "Use somente para testar"
+        required: true
+        default: "skip"
       name:
         type: string
         description: "Name for the ISO"
