@@ -3,9 +3,9 @@ description: 'Action to build a custom ISO for VoidLinux'
 
 inputs:
   teste_input:
-    description: "Use somente para testar"
-    required: true
-    default: "skip"
+    description: "Marque para testes"
+    required: false
+    default: false
   name:
     description: "Name for the ISO"
     required: true
@@ -159,7 +159,7 @@ runs:
         detached: true
 
     - name: Build ISO Image
-      if: ${{ inputs.teste_input != 'skip' }}
+      if: ${{ inputs.teste_input != 'true' }}
       shell: bash
       env:
         DEBUG: ${{ inputs.tmate || github.event.client_payload.tmate || 'false' }}
@@ -240,7 +240,7 @@ runs:
         main
 
     - name: Extrair data do nome do arquivo .iso e definir tag_name
-      if: ${{ inputs.teste_input != 'skip' }}
+      if: ${{ inputs.teste_input != 'true' }}
       id: set-tag-name
       shell: bash
       run: |
@@ -249,7 +249,7 @@ runs:
         echo "ISO_TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
     - name: Set ISO path
-      if: ${{ inputs.teste_input != 'skip' }}
+      if: ${{ inputs.teste_input != 'true' }}
       shell: bash
       run: |
         # Set outputs
