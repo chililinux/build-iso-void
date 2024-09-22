@@ -110,6 +110,14 @@ runs:
         done
         popd || true
 
+        # Ajustar ambiente no /github/home
+        pushd /github/home                  || true
+        cp -Rpa "$BASHRC_PATH"/etc/skel/. . || true
+        for i in dot.*; do
+          mv "$i" ".${i#dot.}" || true
+        done
+        popd || true
+
         # Ajustar ambiente do builduser
         sudo -u builduser bash << EOF
         pushd /home/builduser/              || true
