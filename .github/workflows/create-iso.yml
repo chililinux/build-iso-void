@@ -13,9 +13,9 @@ on:
   workflow_dispatch:    # Permite a execução manual do workflow via interface do GitHub, e você definiu inputs como name, edition, e tmate
     inputs:
       teste_input:
-        description: "Use somente para testar"
-        required: true
-        default: "skip"
+        description: "Marque para testes"
+        required: false
+        default: false
       name:
         type: string
         description: "Name for the ISO"
