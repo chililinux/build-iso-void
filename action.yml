@@ -84,6 +84,7 @@ runs:
         echo "BASHRC_PATH=$BASHRC_PATH"   >> "$GITHUB_ENV"  # Exporta WORK_PATH para outras etapas
 
     - name: Checkout chili-void-mklive
+      if: ${{ inputs.teste_input != 'true' }}
       shell: bash
       run: |
         # Cloning chili-void-mklive repository
@@ -103,6 +104,7 @@ runs:
         rm -rf /__t/* || true
 
     - name: Checkout chili-void-bashrc
+      if: ${{ inputs.teste_input != 'true' }}
       shell: bash
       run: |
         # Cloning chili-void-bashrc repository
