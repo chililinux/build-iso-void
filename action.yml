@@ -106,17 +106,18 @@ runs:
         pushd /root                          || true
         cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
         for i in dot*; do
-          mv -fv "$i" ".${i#dot.}"
+          mv -fv "$i" ".${i#dot.}" || true
         done
         popd || true
 
         # Ajustar ambiente do builduser
         sudo -u builduser bash << EOF
-        cd /home/builduser/                  || true
+        pushd /home/builduser/               || true
         cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
         for i in dot*; do
-          mv -fv "$i" ".${i#dot.}"
+          mv -fv "$i" ".${i#dot.}" || true
         done
+        popd || true
         EOF
 
     - name: Setup TMATE Session
@@ -228,4 +229,3 @@ runs:
       run: |
         # Set outputs
         echo "iso_path=$WORK_PATH/$ISO_BASENAME" >> "$GITHUB_OUTPUT"
-
