@@ -103,20 +103,14 @@ runs:
       shell: bash
       run: |
         # Ajustar ambiente do root
-        pushd /root                       || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/.bash* .       || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/.ps* .         || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/.dircolors* .  || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/.git-prompt* . || true
+        pushd /root                          || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
         popd || true
 
         # Ajustar ambiente do builduser
         sudo -u builduser bash << EOF
-        cd /home/builduser/               || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/.bash* .       || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/.ps* .         || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/.dircolors* .  || true
-        cp -Rpva "$BASHRC_PATH"/etc/skel/.git-prompt* . || true
+        cd /home/builduser/                  || true
+        cp -Rpva "$BASHRC_PATH"/etc/skel/. . || true
         EOF
 
     - name: Setup TMATE Session
@@ -131,7 +125,7 @@ runs:
       env:
         DEBUG: ${{ inputs.tmate }}
         DISTRONAME: ${{ inputs.name }}
-        EDITION: ${{ inputs.edition || github.event.client_payload.edition || 'live-base-custom' }}
+        EDITION: ${{ inputs.edition || github.event.client_payload.edition || 'live-xfce-custom' }}
         MANJAROBRANCH: ${{ inputs.manjaro_branch }}
         COMMUNITYBRANCH: ${{ inputs.community_branch }}
         BIGBRANCH: ${{ inputs.biglinux_branch }}
